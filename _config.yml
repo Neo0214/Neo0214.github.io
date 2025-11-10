@@ -1,0 +1,8 @@
+title: 海拉鲁皇家仓库
+email: chengrui.zhang25@ic.ac.uk
+description: This is the Royal Warehouse of Hyrule, where treasures of wisdom are kept.
+theme: minima
+
+minima:
+  # 禁用在首页文章列表下方显示 RSS 订阅链接
+  show_rss_subscribe: false
