@@ -1,3 +1,1163 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-11-10T16:50:17+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">海拉鲁皇家仓库</title><subtitle>This is the Royal Warehouse of Hyrule, where treasures of wisdom are kept.</subtitle><entry><title type="html">我的第一篇博客文章 - 欢迎来到 Jekyll</title><link href="http://localhost:4000/%E5%85%A5%E9%97%A8/%E6%95%99%E7%A8%8B/2025/11/10/Test.html" rel="alternate" type="text/html" title="我的第一篇博客文章 - 欢迎来到 Jekyll" /><published>2025-11-10T08:30:00+00:00</published><updated>2025-11-10T08:30:00+00:00</updated><id>http://localhost:4000/%E5%85%A5%E9%97%A8/%E6%95%99%E7%A8%8B/2025/11/10/Test</id><content type="html" xml:base="http://localhost:4000/%E5%85%A5%E9%97%A8/%E6%95%99%E7%A8%8B/2025/11/10/Test.html"><![CDATA[<h1 id="欢迎">欢迎！</h1>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/mundana-theme-jekyll/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/mundana-theme-jekyll/" rel="alternate" type="text/html" /><updated>2025-12-15T16:43:55+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/feed.xml</id><title type="html">Hyrule Royal Warehouse</title><subtitle>Mundana is a free Jekyll theme for awesome people like you, Medium like.</subtitle><entry><title type="html">A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold</title><link href="http://localhost:4000/mundana-theme-jekyll/LeetCode1219-en/" rel="alternate" type="text/html" title="A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/LeetCode1219-en</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/LeetCode1219-en/"><![CDATA[<h2 id="algorithm-approach">Algorithm Approach</h2>
 
-<p>Just a test</p>]]></content><author><name></name></author><category term="入门" /><category term="教程" /><summary type="html"><![CDATA[欢迎！]]></summary></entry></feed>
+<p>A 2D vector is used to store the distribution of the gold mines. The algorithm first traverses the entire grid. Any coordinate with a non-zero value is treated as a starting point. We employ DFS (Depth-First Search) with backtracking to search the entire graph. During the search process, visited coordinates are marked (by setting the gold amount to 0), while tracking the currently accumulated gold.</p>
+
+<p>The class maintains a <code class="language-plaintext highlighter-rouge">max</code> variable to record the maximum gold collected and a <code class="language-plaintext highlighter-rouge">path</code> variable to store the optimal path. Whenever a path yielding more gold is found, both <code class="language-plaintext highlighter-rouge">max</code> and <code class="language-plaintext highlighter-rouge">path</code> are updated simultaneously. During backtracking, the stack recording the current path is popped once, and the visited marker is released. Consequently, the path with the maximum gold and the total amount can be determined.</p>
+
+<h2 id="complexity-analysis">Complexity Analysis</h2>
+
+<p>Since the search result depends on the traversal of areas containing gold, let \(k\)be the total number of cells with gold. Let\(m\)be the number of rows and\(n\)be the number of columns. Obviously,\(k \le mn\). Therefore, any subsequent operations involving \(\min\{mn, k\}\)can be simplified directly to\(k\).</p>
+
+<p>The algorithm uses two stacks to store the path; thus, the space complexity is \(O(k+k)\), which simplifies to \(O(k)\).</p>
+
+<p>Let us define a forward exploration step as the basic operation. Each cell with gold can serve as a starting point for DFS traversal, resulting in a total of \(k\)traversals. In each traversal, apart from the starting point, every cell has at most three different directions to proceed. Therefore, the exploration operations scale with at least\(3k\). It follows that the worst-case time complexity is \(O(3^k)\).</p>
+
+<p>However, upon testing with map data where \(k=25\), the execution efficiency was surprisingly high. It did not exhibit the inefficiency expected from a base-3 exponential function. This suggests that the estimated upper bound of “\(3^k\) total exploration operations per starting point” is overly loose.</p>
+
+<p>Since exploration operations only occur in cells containing gold, we analyze them separately. For any collection path, excluding the start and end cells, the intermediate cells are traversed in one of the following seven patterns:</p>
+
+<ol>
+  <li>Left-in Up-out or Up-in Left-out — abbreviated as <strong>LU</strong></li>
+  <li>Right-in Up-out or Up-in Right-out — abbreviated as <strong>RU</strong></li>
+  <li>Also <strong>LD</strong>, <strong>RD</strong>, <strong>LR</strong>, <strong>UD</strong></li>
+  <li>Not traversed by the path, noted as <strong>N</strong></li>
+</ol>
+
+<p>Thus, the solution space tree, originally constructed by three exploration directions per cell, is transformed into one based on the traversal patterns of each cell.</p>
+
+<p>Next, we divide all cells containing gold (excluding the start and end points) into a staggered black-and-white pattern as follows: (For convenience, assume they are clustered in a \(3 \times 3\) grid).</p>
+
+<p><img src="/mundana-theme-jekyll/assets/images/leetcode1219/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
+
+<p>From the seven patterns mentioned above, we know that if the state of every black cell is determined, the state of the white cells is implicitly determined. Therefore, we only need to consider the black cells. Clearly, this partition results in approximately \(k/2\) black cells.</p>
+
+<p>When generating the solution space tree, before traversing the 7 possibilities for cell B, the states of the four surrounding black cells have already been determined (excluding start/end points, which does not affect the complexity analysis). In the figure, if we assume A is determined as LR, then B is restricted to only four cases: LU, RU, UD, or N. The same logic applies elsewhere. Consequently, when generating the solution space tree, each black cell effectively has only 4 exploration choices for the next step. The worst-case time complexity does not exceed \(O(4^{k/2}) = O(2^k)\).</p>
+
+<p>In practice, since gold cells are not always clustered together, the available choices for each black cell will likely be fewer than 4, resulting in even lower time complexity.</p>
+
+<p>In summary, the worst-case time complexity does not exceed \(O(2^k)\).</p>
+
+<p><em>I encountered this problem during an algorithm course assignment. I felt the online time complexity analysis differed from my practical experience, so I made some improvements here.</em></p>]]></content><author><name>sam</name></author><category term="Algorithm" /><summary type="html"><![CDATA[Algorithm Approach]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/leetcode1219/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/leetcode1219/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">电梯调度 - 同济大学操作系统课设</title><link href="http://localhost:4000/mundana-theme-jekyll/Elevator/" rel="alternate" type="text/html" title="电梯调度 - 同济大学操作系统课设" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/Elevator</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/Elevator/"><![CDATA[<h2 id="开发环境">开发环境</h2>
+
+<ul>
+  <li><strong>开发环境</strong>：Windows 11</li>
+  <li><strong>开发软件</strong>：Visual Studio 2022</li>
+  <li><strong>开发语言</strong>：C#</li>
+  <li><strong>主要引用模块</strong>：<code class="language-plaintext highlighter-rouge">System</code>, <code class="language-plaintext highlighter-rouge">System.Threading</code></li>
+</ul>
+
+<h2 id="实现的功能">实现的功能</h2>
+
+<ol>
+  <li><strong>互联接的上下行按钮</strong>：当按下五部电梯门口的上下行按钮时，五部电梯都收到这个请求，根据调度算法决定具体由哪部电梯响应这个请求。</li>
+  <li><strong>独立的楼层按钮</strong>：每部电梯都有各自的楼层按钮，当按下电梯内部的楼层按钮时，该请求由这部电梯响应，具体何时响应由调度算法决定。</li>
+  <li><strong>添加乘客功能</strong>：支持添加乘客，需指定乘客起始楼层和目标楼层，调度算法决定由哪部电梯响应乘客的请求。</li>
+  <li><strong>数码管显示电梯当前楼层</strong>：每部电梯都有一个数码管显示其当前所在楼层。</li>
+  <li><strong>电梯状态显示</strong>：每部电梯都有一个标签显示电梯当前状态：有 <code class="language-plaintext highlighter-rouge">up</code>，<code class="language-plaintext highlighter-rouge">down</code>，<code class="language-plaintext highlighter-rouge">wait</code>，<code class="language-plaintext highlighter-rouge">alarm</code> 四种状态。</li>
+  <li><strong>电梯容量显示</strong>：每部电梯都有一个标签显示电梯可用容量，初始为 5。</li>
+  <li><strong>开门、关门键</strong>：当电梯到达乘客所在楼层和目标楼层时，需要完成开门和关门操作。</li>
+  <li><strong>提示信息框</strong>：在特定时候弹出提示信息，显示乘客被分配到了哪部电梯以及提示用户进行开门或关门操作。</li>
+  <li><strong>乘客状态表</strong>：根据乘客状态实时更新乘客当前所在楼层，只显示未到达目标楼层的乘客。</li>
+</ol>
+
+<h2 id="界面">界面</h2>
+<p><img src="/mundana-theme-jekyll/assets/images/elevator/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
+<h2 id="操作指南">操作指南</h2>
+<ul>
+  <li>用户可以随意点击数字键和上行下行键让电梯在没有乘客的情况下“空跑”，便于观察电梯调度算法的实际表现。</li>
+  <li>用户也可以在右侧的乘客管理模块添加乘客，设定乘客的起始楼层和目标楼层，观察乘客被分配到哪个电梯中，以及乘客乘上电梯时的实际楼层变化，当乘客到达目标楼层时，乘客将从表格中移除。</li>
+  <li>下方的状态栏显示提示信息，提示用户在必要时刻进行开门和关门操作。</li>
+  <li>乘客可以点击 “Open” 和 “Close” 键让电梯开门和关门，也可以按下 “Alarm” 键让电梯处于报警状态。</li>
+  <li>电梯所在楼层和剩余容量在每部电梯上方显示，电梯的当前状态在每部电梯下方显示。</li>
+</ul>
+
+<h2 id="主要设计思路">主要设计思路</h2>
+
+<h3 id="实现的类">实现的类</h3>
+
+<ul>
+  <li><strong>Form1类</strong>：程序的主窗口，负责UI的显示与更新，处理UI的点击事件，管理与乘客有关的逻辑、订阅 <code class="language-plaintext highlighter-rouge">ElevatorController</code> 中定义的事件。</li>
+  <li><strong>ElevatorController类</strong>：实现了电梯的调度算法，管理电梯列表，定义了一些关键的事件。</li>
+  <li><strong>Elevator类</strong>：记录电梯的属性，包括电梯的当前楼层，目标楼层，电梯的状态，电梯的容量，提供了一些公用的方法，可以对电梯的这些属性进行设置和获取。</li>
+  <li><strong>Passenger类</strong>：记录每个乘客的ID，当前所在楼层和目标楼层，被分配到的电梯，以及请求是否已被处理。</li>
+</ul>
+
+<h3 id="elevator-类">Elevator 类</h3>
+<p>电梯的实体，记录每部电梯的状态（等待，上行，下行，报警），当前所在楼层和目标楼层，定义了一些必要的方法，用于得到或设置电梯内的一些成员变量：</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="nn">ElevatorSystem</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">enum</span> <span class="n">status</span>
+    <span class="p">{</span>
+        <span class="n">wait</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">down</span><span class="p">,</span> <span class="n">alarm</span>
+    <span class="p">};</span>
+
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Elevator</span>
+    <span class="p">{</span>
+        <span class="n">status</span> <span class="n">currentStatus</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">currentFloor</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">targetFloor</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">capacity</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="nf">Elevator</span><span class="p">(</span><span class="kt">int</span> <span class="n">current</span><span class="p">=</span><span class="m">0</span><span class="p">,</span><span class="kt">int</span> <span class="n">target</span><span class="p">=</span><span class="m">0</span><span class="p">)</span>
+        <span class="p">{</span> 
+            <span class="n">currentFloor</span> <span class="p">=</span> <span class="n">current</span><span class="p">;</span>
+            <span class="n">targetFloor</span> <span class="p">=</span> <span class="n">target</span><span class="p">;</span>
+            <span class="n">capacity</span> <span class="p">=</span> <span class="m">5</span><span class="p">;</span>
+            <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">status</span><span class="p">.</span><span class="n">wait</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="kt">int</span> <span class="nf">getCurrentFloor</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">currentFloor</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="nf">getTargetFloor</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">targetFloor</span><span class="p">;}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="nf">getCapacity</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">capacity</span><span class="p">;}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">takePassenger</span><span class="p">()</span> <span class="p">{</span> <span class="n">capacity</span><span class="p">--;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">ariveTargetFloor</span><span class="p">()</span> <span class="p">{</span> <span class="n">capacity</span><span class="p">++;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">setTargetFloor</span><span class="p">(</span><span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span> <span class="n">targetFloor</span> <span class="p">=</span> <span class="n">target</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">setStatus</span><span class="p">(</span><span class="n">status</span> <span class="n">sta</span><span class="p">)</span> <span class="p">{</span>  <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">sta</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="n">status</span> <span class="nf">getStatus</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">currentStatus</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">up</span><span class="p">()</span>
+        <span class="p">{</span> 
+            <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">status</span><span class="p">.</span><span class="n">up</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentFloor</span> <span class="p">&lt;</span> <span class="m">20</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">currentFloor</span><span class="p">++;</span>
+                <span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">down</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">status</span><span class="p">.</span><span class="n">down</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentFloor</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">currentFloor</span><span class="p">--;</span>
+                <span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">move</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentFloor</span> <span class="p">&lt;</span> <span class="n">targetFloor</span><span class="p">)</span> <span class="nf">up</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentFloor</span> <span class="p">&gt;</span> <span class="n">targetFloor</span><span class="p">)</span> <span class="nf">down</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="kt">bool</span> <span class="nf">check</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">capacity</span> <span class="p">&lt;</span> <span class="m">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">status</span><span class="p">.</span><span class="n">alarm</span><span class="p">;</span>
+                <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="passenger-类">Passenger 类</h3>
+<p>乘客的实体，记录每个乘客的ID，当前所在楼层和目标楼层，被分配到的电梯，以及请求是否已被响应：</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="nn">ElevatorSystem</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Passenger</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">currentFloor</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">targetFloor</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">assignedElevator</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="c1">// 假设电梯分配后存储电梯的编号</span>
+        <span class="k">public</span> <span class="kt">bool</span> <span class="n">isHandled</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span> <span class="c1">// 默认为false，表示未处理</span>
+
+        <span class="k">public</span> <span class="nf">Passenger</span><span class="p">(</span><span class="kt">int</span> <span class="n">ID</span><span class="p">,</span> <span class="kt">int</span> <span class="n">current</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="kt">int</span> <span class="n">assigned</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">id</span> <span class="p">=</span> <span class="n">ID</span><span class="p">;</span>
+            <span class="n">currentFloor</span> <span class="p">=</span> <span class="n">current</span><span class="p">;</span>
+            <span class="n">targetFloor</span> <span class="p">=</span> <span class="n">target</span><span class="p">;</span>
+            <span class="n">assignedElevator</span> <span class="p">=</span> <span class="n">assigned</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<h3 id="类之间的联系">类之间的联系</h3>
+<p>通过在 Form1 中引入 ElevatorController 的示例 manage，实现两个类的交互，在 Form1 的初始化函数中完成对在 ElevatorController 中定义的事件的订阅：</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="nf">Form1</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nf">InitializeComponent</span><span class="p">();</span>
+    <span class="nf">InitializeElevatorUI</span><span class="p">();</span>
+    <span class="nf">InitialMassageBox</span><span class="p">();</span>
+    <span class="nf">InitializeFloorRequestButtons</span><span class="p">();</span>
+    <span class="nf">InitializePassengerManagementUI</span><span class="p">();</span>
+    <span class="n">manage</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ElevatorController</span><span class="p">();</span>
+    
+    <span class="c1">// 事件订阅</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">ElevatorMoved</span> <span class="p">+=</span> <span class="n">Manage_ElevatorMoved</span><span class="p">;</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">ElevatorRequestProcessed</span> <span class="p">+=</span> <span class="n">Manage_ElevatorRequestProcessed</span><span class="p">;</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">ElevatorExternalRequestProcessed</span> <span class="p">+=</span> <span class="n">Manage_ExternalRequestProcessed</span><span class="p">;</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">OpenDoorPressed</span> <span class="p">+=</span> <span class="n">Manage_OpenDoorPressed</span><span class="p">;</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">CloseDoorPressed</span> <span class="p">+=</span> <span class="n">Manage_CloseDoorPressed</span><span class="p">;</span>
+  
+    <span class="nf">LoadImages</span><span class="p">();</span>
+    <span class="nf">InitializeTimer</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>在<code class="language-plaintext highlighter-rouge">Form1</code>中定义<code class="language-plaintext highlighter-rouge">Passenger</code>类型的列表<code class="language-plaintext highlighter-rouge">passengers</code>，实现对乘客的管理；</li>
+  <li>在<code class="language-plaintext highlighter-rouge">ElevatorController</code>中定义<code class="language-plaintext highlighter-rouge">Elevator</code>类型的数组<code class="language-plaintext highlighter-rouge">elevators</code>，实现对五部电梯的管理；</li>
+</ul>
+
+<h3 id="调度算法">调度算法</h3>
+<ul>
+  <li>在<code class="language-plaintext highlighter-rouge">ElevatorController</code>中定义四个二维数组，记录需要处理的上行和下行请求，以及等待处理的上行和下行请求：
+    <div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="kt">int</span><span class="p">[,]</span> <span class="n">upRequest</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">ElevatorsCount</span><span class="p">,</span> <span class="n">FloorsCount</span><span class="p">];</span>
+<span class="k">public</span> <span class="kt">int</span><span class="p">[,]</span> <span class="n">downRequest</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">ElevatorsCount</span><span class="p">,</span> <span class="n">FloorsCount</span><span class="p">];</span>
+<span class="c1">//wait数组里储存的是电梯需要经过状态变换才能处理的请求</span>
+<span class="k">public</span> <span class="kt">int</span><span class="p">[,]</span> <span class="n">waitUpRequest</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">ElevatorsCount</span><span class="p">,</span><span class="n">FloorsCount</span><span class="p">];</span>
+<span class="k">public</span> <span class="kt">int</span><span class="p">[,]</span> <span class="n">waitDownRequest</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">ElevatorsCount</span><span class="p">,</span> <span class="n">FloorsCount</span><span class="p">];</span>
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>wait数组里储存的时电梯需要经过状态变换才能处理请求；</p>
+  </li>
+  <li>
+    <p>当上行键被按下时，调用public int handleUpRequest(int floor)，处理上行请求；当下行键被按下时，调用public int handleDownRequest(int floor) ，处理下行请求；两个函数的返回值都是被分配到的电梯编号；具体来说，调度算法如下（以处理上行请求为例）：</p>
+  </li>
+  <li>
+    <p>根据每部电梯的状态和电梯所在楼层计算与被按下的上行键所在楼层的距离：</p>
+
+    <ul>
+      <li>
+        <p>如果电梯处于静止状态，这个距离等于电梯所在楼层减去上行键所在楼层的绝对值；</p>
+      </li>
+      <li>
+        <p>如果电梯处于上行状态，那么分为两种情况：</p>
+
+        <ul>
+          <li>电梯当前所在楼层大于上行键所在楼层，这个距离等于该电梯目前向上请求中最高的层减去电梯所在楼层的绝对值，加上电梯目前向上请求中最高的层减去上行键所在楼层的绝对值；
+<img src="/mundana-theme-jekyll/assets/images/elevator/fig2.jpg" alt="Figure2" class="mx-auto d-block" /></li>
+          <li>电梯当前所在楼层小于上行键所在楼层，这个距离等于电梯当前所在楼层减去上行键所在楼层的绝对值；</li>
+        </ul>
+      </li>
+      <li>
+        <p>如果电梯处于下行状态，那么这个距离等于该电梯目前向下请求中的最低的层减去电梯所在楼层的绝对值，加上电梯目前向下请求中最低的层减去上行键所在楼层的绝对值；</p>
+      </li>
+    </ul>
+  </li>
+  <li>选出与上行键所在楼层距离最近的电梯，并在其上行请求列表中添加上行键所在的楼层：
+    <ul>
+      <li>如果该电梯目前处于静止状态，那么有两种情况：
+        <ul>
+          <li>上行键所在楼层大于电梯所在楼层，把该请求添加进upRequest[elevatorIndex,floor]中，因为电梯即将改变成上行状态，该请求能立即得到处理；</li>
+          <li>上行键所在楼层小于电梯所在楼层，把该请求添加进waitUpRequest[elevatorIndex,floor]中，因为电梯需要先改变成下行状态，再改变成上行状态，才能处理该请求；</li>
+        </ul>
+      </li>
+      <li>如果电梯目前处于上行状态，那么有两种情况：
+        <ul>
+          <li>上行键所在楼层大于电梯所在楼层，把该请求添加进upRequest[elevatorIndex,floor]中，因为电梯不需要改变状态就可以响应该请求；</li>
+          <li>上行键所在楼层小于电梯所在楼层，把该请求添加进waitUpRequest[elevatorIndex,floor]中，因为该电梯需要改变状态才能响应该请求；</li>
+        </ul>
+      </li>
+      <li>
+        <p>如果电梯处于下行状态，那么直接把请求添加进waitUpRequest[elevator,Index]中，因为该电梯需要改变状态才能响应该请求。
+```csharp
+public int handleUpRequest(int floor)
+{
+int minDist = FloorsCount + 1;
+int elevatorIndex = ElevatorsCount;</p>
+
+        <p>for(int i=0;i&lt;ElevatorsCount;i++)
+{
+    int currentFloor = elevators[i].getCurrentFloor();
+    if (elevators[i].getStatus()==status.alarm)
+    {
+        continue;
+    }
+    if (elevators[i].getStatus()==status.wait)
+    {
+        if(Math.Abs(currentFloor-floor) &lt; minDist)
+        {
+            minDist=Math.Abs(currentFloor-floor);
+            elevatorIndex=i;
+        }
+    }
+    else if (elevators[i].getStatus()==status.up)
+    {
+        if(currentFloor &lt;= floor)
+        {
+            if(Math.Abs(currentFloor-floor)&lt;minDist)
+            { 
+                minDist = Math.Abs(currentFloor-floor);
+                elevatorIndex = i; 
+            }
+        }
+        else if(currentFloor &gt; floor)
+        {
+            int tmp = 0;
+            //找到目前向上请求中最高的楼层
+            for(int j=FloorsCount-1;j&gt;=0;j–)
+            {
+                if (upRequest[i, j] == 1)
+                {
+                    tmp = j;
+                    break;
+                }
+            }
+            //计算距离
+            int dist = Math.Abs(tmp - currentFloor) + Math.Abs(tmp - floor);
+            if(dist&lt;minDist)
+            {
+                minDist=dist;
+                elevatorIndex = i;
+            }
+        }</p>
+
+        <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>}
+else if (elevators[i].getStatus()==status.down)
+{
+    int tmp = 0;
+    //找到目前向下请求中最小的层
+    for(int j=0;j&lt;FloorsCount;j++)
+    {
+        if (downRequest[i, j] == 1)
+        {
+            tmp = j;
+            break;
+        }
+    }
+    int dist=Math.Abs(tmp - currentFloor) + Math.Abs(tmp - floor);
+    if(dist&lt;minDist) 
+    {
+        minDist=dist;
+        elevatorIndex = i;
+    }
+  
+} } int currenFloor = elevators[elevatorIndex].getCurrentFloor(); if (elevators[elevatorIndex].getStatus()==status.wait)  {
+      
+if(floor &gt;= currenFloor)
+    upRequest[elevatorIndex, floor] = 1;
+else
+    waitUpRequest[elevatorIndex, floor] = 1;
+      
+//upRequest[elevatorIndex, floor] = 1; } else if (elevators[elevatorIndex].getStatus()==status.up)
+</code></pre></div>        </div>
+
+        <p>{
+    if (floor &gt;= currenFloor)
+        upRequest[elevatorIndex, floor] = 1;
+    else
+        waitUpRequest[elevatorIndex, floor] = 1;
+}
+else
+    waitUpRequest[elevatorIndex,floor] = 1;</p>
+
+        <p>return elevatorIndex;
+}</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>当楼层按钮被按下时，直接对<code class="language-plaintext highlighter-rouge">upRequest</code>和<code class="language-plaintext highlighter-rouge">downRequest</code>进行修改，当在上行电梯中按下比电梯当前所在楼层小的楼层，将不会被响应，当在下行电梯中按下比电梯当前所在楼层小的楼层，将不会被响应：</p>
+
+    <div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">private</span> <span class="k">void</span> <span class="nf">FloorButton_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">,</span> <span class="kt">int</span> <span class="n">elevatorIndex</span><span class="p">,</span> <span class="kt">int</span> <span class="n">floor</span><span class="p">)</span>
+ <span class="p">{</span>
+  
+     <span class="n">Button</span> <span class="n">clickButton</span> <span class="p">=</span> <span class="n">sender</span> <span class="k">as</span> <span class="n">Button</span><span class="p">;</span>
+      
+     <span class="c1">// 处理楼层按钮点击事件</span>
+     <span class="c1">//MessageBox.Show($"电梯 {elevatorIndex + 1} 的第 {floor + 1} 层按钮被点击");</span>
+     <span class="k">if</span> <span class="p">(</span><span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">up</span><span class="p">)</span>
+     <span class="p">{</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">floor</span> <span class="p">&gt;=</span> <span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">())</span> 
+         <span class="p">{</span>
+             <span class="n">manage</span><span class="p">.</span><span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+             <span class="k">if</span> <span class="p">(</span><span class="n">clickButton</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+             <span class="p">{</span>
+                 <span class="n">clickButton</span><span class="p">.</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+             <span class="p">}</span>
+  
+         <span class="p">}</span>
+     <span class="p">}</span>
+     <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">down</span><span class="p">)</span> 
+     <span class="p">{</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">floor</span> <span class="p">&lt;=</span> <span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">())</span>
+         <span class="p">{</span>
+             <span class="n">manage</span><span class="p">.</span><span class="n">downRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+             <span class="k">if</span> <span class="p">(</span><span class="n">clickButton</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+             <span class="p">{</span>
+                 <span class="n">clickButton</span><span class="p">.</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+             <span class="p">}</span>
+  
+         <span class="p">}</span>
+     <span class="p">}</span>
+     <span class="k">else</span>
+     <span class="p">{</span>
+         <span class="k">if</span> <span class="p">(</span><span class="n">floor</span> <span class="p">&gt;=</span> <span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">())</span>
+         <span class="p">{</span>
+             <span class="n">manage</span><span class="p">.</span><span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+             <span class="k">if</span> <span class="p">(</span><span class="n">clickButton</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+             <span class="p">{</span>
+                 <span class="n">clickButton</span><span class="p">.</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+             <span class="p">}</span>
+  
+         <span class="p">}</span>
+         <span class="k">else</span> 
+         <span class="p">{</span>
+             <span class="n">manage</span><span class="p">.</span><span class="n">downRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span><span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+             <span class="k">if</span> <span class="p">(</span><span class="n">clickButton</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+             <span class="p">{</span>
+                 <span class="n">clickButton</span><span class="p">.</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+             <span class="p">}</span>
+  
+         <span class="p">}</span>
+     <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div>    </div>
+    <h3 id="电梯运行逻辑">电梯运行逻辑</h3>
+  </li>
+  <li>为每部电梯启动一个独立的线程，并设置线程为后台线程，线程执行<code class="language-plaintext highlighter-rouge">private void ElevatorRoutine(int elevatorIndex)</code> 方法：
+```csharp
+private void StartElevatorThreads()
+{
+  for(int i=0;i&lt;ElevatorsCount;i++)
+  {
+      int index = i;
+      Thread elevatorThread = new Thread(() =&gt; ElevatorRoutine(index))
+      {
+          IsBackground = true
+      };
+      elevatorThread.Start();
+  }
+}</li>
+</ul>
+
+<p>private void ElevatorRoutine(int elevatorIndex) 
+{
+    while (true)
+    {</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    Thread.Sleep(500);
+    pullUpward(elevatorIndex);
+    Thread.Sleep(500);
+    prepareForDown(elevatorIndex);
+    Thread.Sleep(500);
+    pushDownward(elevatorIndex);
+    Thread.Sleep(500);
+    prepareForUp(elevatorIndex);
+} } ``` - 在void pullUpward(int elevatorIndex)里处理电梯的上行请求，在void pushDownward(int elevatorIndex)里处理电梯的下行请求； - 对waitUpRequest和waitDownRequest的处理分别在prepareForUp和prepareForDown中进行； - 在ElevatorController的初始化函数中启动线程： ```csharp public ElevatorController() {
+for(int i=0;i&lt;elevators.Length; i++) 
+{
+    elevators[i] = new Elevator();
+}
+
+for(int i=0;i &lt; ElevatorsCount;i++)
+{
+    for(int j=0;j &lt; FloorsCount;j++)
+    {
+        upRequest[i, j] = 0;
+        downRequest[i, j] = 0;
+        waitUpRequest[i, j] = 0;
+        waitDownRequest[i, j] = 0;
+    }
+}
+StartElevatorThreads(); } ``` ### 事件定义 - 在ElevatorController中定义了五个事件： ```csharp public event Action&lt;int, int&gt; ElevatorMoved; public event Action&lt;int, int&gt; ElevatorRequestProcessed; public event Action&lt;int, int&gt; ElevatorExternalRequestProcessed; public event Action&lt;int&gt; OpenDoorPressed; public event Action&lt;int&gt; CloseDoorPressed; ``` 分别用于处理电梯移动，电梯楼层请求被处理和电梯外部请求被处理，开门按钮被按下和关门按钮被按下； - 在Form1中订阅这些事件： ```csharp manage.ElevatorMoved += Manage_ElevatorMoved; manage.ElevatorRequestProcessed += Manage_ElevatorRequestProcessed; manage.ElevatorExternalRequestProcessed += Manage_ExternalRequestProcessed; manage.OpenDoorPressed += Manage_OpenDoorPressed; manage.CloseDoorPressed += Manage_CloseDoorPressed; ``` - 事件订阅是一个在软件设计中常见的模式，它属于更广泛的发布-订阅（pub-sub）模式。在这种模式中，组件可以宣布（发布）某些事件的发生，而其他组件可以表达对这些事件的兴趣（订阅），当事件发生时，这些订阅了事件的组件会自动接收通知并作出相应的响应。 - 例如，在ElevatorController的pullUpward方法中，执行下面这个片段，程序会检验电梯当前所在楼层是否存在请求，如果有，则请求被响应，事件被触发，接着订阅了事件的方法将会被调用，楼层按钮和上行按钮的高亮会消失，电梯也能得到位置的更新： ```csharp while (elevators[elevatorIndex].getCurrentFloor() != elevators[elevatorIndex].getTargetFloor()) {
+elevators[elevatorIndex].move();
+if (upRequest[elevatorIndex, elevators[elevatorIndex].getCurrentFloor()] == 1)
+{
+    upRequest[elevatorIndex, elevators[elevatorIndex].getCurrentFloor()] = 0;
+    ElevatorRequestProcessed.Invoke(elevatorIndex, elevators[elevatorIndex].getCurrentFloor());
+    ElevatorExternalRequestProcessed.Invoke(elevators[elevatorIndex].getCurrentFloor(), 1);
+}
+ElevatorMoved.Invoke(elevatorIndex, elevators[elevatorIndex].getCurrentFloor()); } if (elevators[elevatorIndex].getCurrentFloor() == i) {
+upRequest[elevatorIndex, i] = 0;
+ElevatorRequestProcessed.Invoke(elevatorIndex, i);
+ElevatorExternalRequestProcessed.Invoke(i, 1); } ``` ### 定义计时器 - 定时器（Timer）在编程中用于在设定的时间间隔内重复执行某些任务，或者在一定的延迟之后执行任务。checkElevatorTimer.Elapsed += CheckElevatorStatus; 这行代码表示将 CheckElevatorStatus 方法绑定到定时器的 Elapsed 事件。这意味着每当定时器的计时周期结束时，CheckElevatorStatus 方法将被自动调用。AutoReset = true 设置定时器在触发 Elapsed 事件后自动重新开始计时。这使得定时器成为一个重复触发的周期性定时器。 - 项目中一共使用了三个定时器，分别用于播放动画，检查电梯状态，以及更新乘客列表： ```csharp private void InitializeTimer() {
+animationTimer.Interval = 200; // 设置动画帧切换的时间间隔为200毫秒
+animationTimer.Tick += new EventHandler(AnimationTimer_Tick);
+updateTimer = new System.Windows.Forms.Timer();
+updateTimer.Interval = 1000;  // 更新间隔设置为1000毫秒（1秒）
+updateTimer.Tick += new EventHandler(UpdateTimer_Tick);
+updateTimer.Start();
+// 初始化定时器
+checkElevatorTimer = new System.Timers.Timer(1000); // 设置时间间隔为1秒
+checkElevatorTimer.Elapsed += CheckElevatorStatus;
+checkElevatorTimer.AutoReset = true;
+checkElevatorTimer.Enabled = true; // 初始状态为禁用 } ``` - `CheckElevatorStatus`定时检查是否有电梯到达了乘客的目标楼层，并更新电梯的状态标签： ```csharp private async void CheckElevatorStatus(Object source, System.Timers.ElapsedEventArgs e) {
+// 在Task.Run内执行需要在UI线程上完成的操作
+await Task.Run(() =&gt;
+{
+    Invoke((MethodInvoker)delegate
+    {
+        foreach (var passenger in passengers)
+        {
+            if (!passenger.isHandled &amp;&amp; manage.elevators[passenger.assignedElevator].getCurrentFloor() == passenger.currentFloor)
+            {
+                passenger.isHandled = true;
+                messageBox.AppendText($"Please press the open door button for Elevator {passenger.assignedElevator + 1} to let the passenger in.{Environment.NewLine}");
+
+
+                var openTcs = new TaskCompletionSource&lt;bool&gt;();
+                openDoorTcs[passenger.assignedElevator] = openTcs;
+                openTcs.Task.ContinueWith(async t =&gt;
+                {
+                    // 等待两秒后，执行后续逻辑
+                    await Task.Delay(2000);
+                    openDoorButtons[passenger.assignedElevator].BackColor = Color.White;
+                    var closeTcs = new TaskCompletionSource&lt;bool&gt;();
+                    closeDoorTcs[passenger.assignedElevator] = closeTcs;
+                    await closeTcs.Task;
+
+                    // 关门后延迟两秒
+                    await Task.Delay(2000);
+                    closeDoorButtons[passenger.assignedElevator].BackColor = Color.White;
+                    Invoke((MethodInvoker)(() =&gt; toTargetFloorOfPassenger(passenger.id, passenger.assignedElevator, passenger.targetFloor)));
+                }, TaskScheduler.FromCurrentSynchronizationContext());
+            }
+        }
+    });
+});
+
+
+// 其他状态更新也必须在UI线程上执行
+Invoke((MethodInvoker)delegate
+{
+    for (int i = 0; i &lt; ElevatorsCount; i++)
+    {
+        Elevator elevator = manage.elevators[i];
+        status currentStatus = elevator.getStatus();
+        int capacity = elevator.getCapacity();
+        elevatorCapacityLabels[i].Text = $"Capacity: {capacity}";
+
+        // 更新状态标签颜色及文字
+        UpdateElevatorStatusLabels(currentStatus, i);
+    }
+}); } ```
+</code></pre></div></div>]]></content><author><name>yik</name></author><category term="算法" /><summary type="html"><![CDATA[开发环境]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/elevator/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/elevator/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Elevator Scheduling - Tongji University Operating System Course Project</title><link href="http://localhost:4000/mundana-theme-jekyll/Elevator-en/" rel="alternate" type="text/html" title="Elevator Scheduling - Tongji University Operating System Course Project" /><published>2025-12-14T00:00:00+00:00</published><updated>2025-12-14T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/Elevator-en</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/Elevator-en/"><![CDATA[<h2 id="development-environment">Development Environment</h2>
+
+<ul>
+  <li><strong>Development Environment</strong>: Windows 11</li>
+  <li><strong>Development Software</strong>: Visual Studio 2022</li>
+  <li><strong>Development Language</strong>: C#</li>
+  <li><strong>Main Referenced Modules</strong>: <code class="language-plaintext highlighter-rouge">System</code>, <code class="language-plaintext highlighter-rouge">System.Threading</code></li>
+</ul>
+
+<h2 id="implemented-features">Implemented Features</h2>
+
+<ol>
+  <li><strong>Interconnected Up and Down Buttons</strong>: When the up or down buttons at the elevator entrance are pressed, all five elevators receive this request. The scheduling algorithm determines which specific elevator will respond to the request.</li>
+  <li><strong>Independent Floor Buttons</strong>: Each elevator has its own floor buttons. When a floor button inside an elevator is pressed, that specific elevator responds to the request, with the timing determined by the scheduling algorithm.</li>
+  <li><strong>Passenger Addition Function</strong>: Supports adding passengers by specifying their starting floor and destination floor. The scheduling algorithm decides which elevator will serve the passenger’s request.</li>
+  <li><strong>Digital Display of Current Floor</strong>: Each elevator has a digital display showing its current floor.</li>
+  <li><strong>Elevator Status Display</strong>: Each elevator has a label displaying its current status: <code class="language-plaintext highlighter-rouge">up</code>, <code class="language-plaintext highlighter-rouge">down</code>, <code class="language-plaintext highlighter-rouge">wait</code>, or <code class="language-plaintext highlighter-rouge">alarm</code>.</li>
+  <li><strong>Elevator Capacity Display</strong>: Each elevator has a label showing its available capacity, initially set at 5.</li>
+  <li><strong>Door Open and Close Buttons</strong>: When an elevator reaches a passenger’s floor or destination floor, it needs to complete door opening and closing operations.</li>
+  <li><strong>Message Box</strong>: Displays prompt messages at specific times, showing which elevator has been assigned to a passenger and reminding users to open or close doors.</li>
+  <li><strong>Passenger Status Table</strong>: Updates passenger locations in real-time based on their status, displaying only passengers who have not yet reached their destination floor.</li>
+</ol>
+
+<h2 id="user-interface">User Interface</h2>
+<p><img src="/mundana-theme-jekyll/assets/images/elevator/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
+
+<h2 id="user-guide">User Guide</h2>
+<ul>
+  <li>Users can freely click number buttons and up/down buttons to let elevators run “empty” without passengers, which helps observe the actual performance of the elevator scheduling algorithm.</li>
+  <li>Users can also add passengers in the passenger management module on the right side, set their starting and destination floors, and observe which elevator the passenger is assigned to, as well as the actual floor changes when the passenger boards the elevator. When passengers reach their destination floor, they are removed from the table.</li>
+  <li>The status bar at the bottom displays prompt messages, reminding users to open and close doors when necessary.</li>
+  <li>Passengers can click the “Open” and “Close” buttons to open and close elevator doors, or press the “Alarm” button to put the elevator in alarm status.</li>
+  <li>The elevator’s current floor and remaining capacity are displayed above each elevator, while the current status is shown below each elevator.</li>
+</ul>
+
+<h2 id="main-design-approach">Main Design Approach</h2>
+
+<h3 id="implemented-classes">Implemented Classes</h3>
+
+<ul>
+  <li><strong>Form1 Class</strong>: The main window of the program, responsible for UI display and updates, handling UI click events, managing passenger-related logic, and subscribing to events defined in <code class="language-plaintext highlighter-rouge">ElevatorController</code>.</li>
+  <li><strong>ElevatorController Class</strong>: Implements the elevator scheduling algorithm, manages the elevator list, and defines key events.</li>
+  <li><strong>Elevator Class</strong>: Records elevator properties, including current floor, target floor, status, and capacity. Provides common methods to set and retrieve these properties.</li>
+  <li><strong>Passenger Class</strong>: Records each passenger’s ID, current floor, destination floor, assigned elevator, and whether the request has been processed.</li>
+</ul>
+
+<h3 id="elevator-class">Elevator Class</h3>
+<p>The elevator entity records each elevator’s status (wait, up, down, alarm), current floor, and target floor. It defines necessary methods to get or set member variables within the elevator:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="nn">ElevatorSystem</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">enum</span> <span class="n">status</span>
+    <span class="p">{</span>
+        <span class="n">wait</span><span class="p">,</span> <span class="n">up</span><span class="p">,</span> <span class="n">down</span><span class="p">,</span> <span class="n">alarm</span>
+    <span class="p">};</span>
+
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Elevator</span>
+    <span class="p">{</span>
+        <span class="n">status</span> <span class="n">currentStatus</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">currentFloor</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">targetFloor</span><span class="p">;</span>
+        <span class="kt">int</span> <span class="n">capacity</span><span class="p">;</span>
+
+        <span class="k">public</span> <span class="nf">Elevator</span><span class="p">(</span><span class="kt">int</span> <span class="n">current</span><span class="p">=</span><span class="m">0</span><span class="p">,</span><span class="kt">int</span> <span class="n">target</span><span class="p">=</span><span class="m">0</span><span class="p">)</span>
+        <span class="p">{</span> 
+            <span class="n">currentFloor</span> <span class="p">=</span> <span class="n">current</span><span class="p">;</span>
+            <span class="n">targetFloor</span> <span class="p">=</span> <span class="n">target</span><span class="p">;</span>
+            <span class="n">capacity</span> <span class="p">=</span> <span class="m">5</span><span class="p">;</span>
+            <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">status</span><span class="p">.</span><span class="n">wait</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="kt">int</span> <span class="nf">getCurrentFloor</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">currentFloor</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="nf">getTargetFloor</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">targetFloor</span><span class="p">;}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="nf">getCapacity</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">capacity</span><span class="p">;}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">takePassenger</span><span class="p">()</span> <span class="p">{</span> <span class="n">capacity</span><span class="p">--;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">ariveTargetFloor</span><span class="p">()</span> <span class="p">{</span> <span class="n">capacity</span><span class="p">++;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">setTargetFloor</span><span class="p">(</span><span class="kt">int</span> <span class="n">target</span><span class="p">)</span> <span class="p">{</span> <span class="n">targetFloor</span> <span class="p">=</span> <span class="n">target</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">setStatus</span><span class="p">(</span><span class="n">status</span> <span class="n">sta</span><span class="p">)</span> <span class="p">{</span>  <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">sta</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="n">status</span> <span class="nf">getStatus</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">currentStatus</span><span class="p">;</span> <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">up</span><span class="p">()</span>
+        <span class="p">{</span> 
+            <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">status</span><span class="p">.</span><span class="n">up</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentFloor</span> <span class="p">&lt;</span> <span class="m">20</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">currentFloor</span><span class="p">++;</span>
+                <span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">down</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">status</span><span class="p">.</span><span class="n">down</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentFloor</span> <span class="p">&gt;</span> <span class="m">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">currentFloor</span><span class="p">--;</span>
+                <span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="k">void</span> <span class="nf">move</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentFloor</span> <span class="p">&lt;</span> <span class="n">targetFloor</span><span class="p">)</span> <span class="nf">up</span><span class="p">();</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">currentFloor</span> <span class="p">&gt;</span> <span class="n">targetFloor</span><span class="p">)</span> <span class="nf">down</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="k">public</span> <span class="kt">bool</span> <span class="nf">check</span><span class="p">()</span>
+        <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">capacity</span> <span class="p">&lt;</span> <span class="m">0</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">status</span><span class="p">.</span><span class="n">alarm</span><span class="p">;</span>
+                <span class="k">return</span> <span class="k">false</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">return</span> <span class="k">true</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="passenger-class">Passenger Class</h3>
+<p>The passenger entity records each passenger’s ID, current floor, destination floor, assigned elevator, and whether the request has been handled:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">namespace</span> <span class="nn">ElevatorSystem</span>
+<span class="p">{</span>
+    <span class="k">public</span> <span class="k">class</span> <span class="nc">Passenger</span>
+    <span class="p">{</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">id</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">currentFloor</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">targetFloor</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span>
+        <span class="k">public</span> <span class="kt">int</span> <span class="n">assignedElevator</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="c1">// Stores the elevator number after assignment</span>
+        <span class="k">public</span> <span class="kt">bool</span> <span class="n">isHandled</span> <span class="p">{</span> <span class="k">get</span><span class="p">;</span> <span class="k">set</span><span class="p">;</span> <span class="p">}</span> <span class="p">=</span> <span class="k">false</span><span class="p">;</span> <span class="c1">// Default is false, indicating unprocessed</span>
+
+        <span class="k">public</span> <span class="nf">Passenger</span><span class="p">(</span><span class="kt">int</span> <span class="n">ID</span><span class="p">,</span> <span class="kt">int</span> <span class="n">current</span><span class="p">,</span> <span class="kt">int</span> <span class="n">target</span><span class="p">,</span> <span class="kt">int</span> <span class="n">assigned</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="n">id</span> <span class="p">=</span> <span class="n">ID</span><span class="p">;</span>
+            <span class="n">currentFloor</span> <span class="p">=</span> <span class="n">current</span><span class="p">;</span>
+            <span class="n">targetFloor</span> <span class="p">=</span> <span class="n">target</span><span class="p">;</span>
+            <span class="n">assignedElevator</span> <span class="p">=</span> <span class="n">assigned</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="relationships-between-classes">Relationships Between Classes</h3>
+<p>The interaction between the two classes is achieved by introducing an instance of ElevatorController named “manage” in Form1. Event subscriptions defined in ElevatorController are completed in Form1’s initialization function:</p>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="nf">Form1</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="nf">InitializeComponent</span><span class="p">();</span>
+    <span class="nf">InitializeElevatorUI</span><span class="p">();</span>
+    <span class="nf">InitialMassageBox</span><span class="p">();</span>
+    <span class="nf">InitializeFloorRequestButtons</span><span class="p">();</span>
+    <span class="nf">InitializePassengerManagementUI</span><span class="p">();</span>
+    <span class="n">manage</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">ElevatorController</span><span class="p">();</span>
+    
+    <span class="c1">// Event subscriptions</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">ElevatorMoved</span> <span class="p">+=</span> <span class="n">Manage_ElevatorMoved</span><span class="p">;</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">ElevatorRequestProcessed</span> <span class="p">+=</span> <span class="n">Manage_ElevatorRequestProcessed</span><span class="p">;</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">ElevatorExternalRequestProcessed</span> <span class="p">+=</span> <span class="n">Manage_ExternalRequestProcessed</span><span class="p">;</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">OpenDoorPressed</span> <span class="p">+=</span> <span class="n">Manage_OpenDoorPressed</span><span class="p">;</span>
+    <span class="n">manage</span><span class="p">.</span><span class="n">CloseDoorPressed</span> <span class="p">+=</span> <span class="n">Manage_CloseDoorPressed</span><span class="p">;</span>
+  
+    <span class="nf">LoadImages</span><span class="p">();</span>
+    <span class="nf">InitializeTimer</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+<ul>
+  <li>In <code class="language-plaintext highlighter-rouge">Form1</code>, a list of <code class="language-plaintext highlighter-rouge">Passenger</code> type called <code class="language-plaintext highlighter-rouge">passengers</code> is defined to manage passengers.</li>
+  <li>In <code class="language-plaintext highlighter-rouge">ElevatorController</code>, an array of <code class="language-plaintext highlighter-rouge">Elevator</code> type called <code class="language-plaintext highlighter-rouge">elevators</code> is defined to manage the five elevators.</li>
+</ul>
+
+<h3 id="scheduling-algorithm">Scheduling Algorithm</h3>
+<ul>
+  <li>Four two-dimensional arrays are defined in <code class="language-plaintext highlighter-rouge">ElevatorController</code> to record up and down requests that need processing, as well as up and down requests waiting to be processed:</li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="kt">int</span><span class="p">[,]</span> <span class="n">upRequest</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">ElevatorsCount</span><span class="p">,</span> <span class="n">FloorsCount</span><span class="p">];</span>
+<span class="k">public</span> <span class="kt">int</span><span class="p">[,]</span> <span class="n">downRequest</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">ElevatorsCount</span><span class="p">,</span> <span class="n">FloorsCount</span><span class="p">];</span>
+<span class="c1">// The wait arrays store requests that require the elevator to change status before processing</span>
+<span class="k">public</span> <span class="kt">int</span><span class="p">[,]</span> <span class="n">waitUpRequest</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">ElevatorsCount</span><span class="p">,</span><span class="n">FloorsCount</span><span class="p">];</span>
+<span class="k">public</span> <span class="kt">int</span><span class="p">[,]</span> <span class="n">waitDownRequest</span> <span class="p">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="n">ElevatorsCount</span><span class="p">,</span> <span class="n">FloorsCount</span><span class="p">];</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>The wait arrays store requests that require the elevator to undergo a status change before processing.</p>
+  </li>
+  <li>
+    <p>When the up button is pressed, <code class="language-plaintext highlighter-rouge">public int handleUpRequest(int floor)</code> is called to process the up request. When the down button is pressed, <code class="language-plaintext highlighter-rouge">public int handleDownRequest(int floor)</code> is called to process the down request. Both functions return the assigned elevator number. Specifically, the scheduling algorithm works as follows (using up request processing as an example):</p>
+  </li>
+  <li>
+    <p>Calculate the distance between each elevator and the floor where the up button was pressed based on each elevator’s status and location:</p>
+
+    <ul>
+      <li>
+        <p>If the elevator is stationary, this distance equals the absolute value of the elevator’s floor minus the up button’s floor.</p>
+      </li>
+      <li>
+        <p>If the elevator is moving upward, there are two cases:</p>
+
+        <ul>
+          <li>If the elevator’s current floor is higher than the up button’s floor, the distance equals the absolute value of the highest floor in the elevator’s current upward requests minus the elevator’s floor, plus the absolute value of the highest floor in the elevator’s current upward requests minus the up button’s floor.
+<img src="/mundana-theme-jekyll/assets/images/elevator/fig2.jpg" alt="Figure2" class="mx-auto d-block" /></li>
+          <li>If the elevator’s current floor is lower than the up button’s floor, the distance equals the absolute value of the elevator’s current floor minus the up button’s floor.</li>
+        </ul>
+      </li>
+      <li>
+        <p>If the elevator is moving downward, the distance equals the absolute value of the lowest floor in the elevator’s current downward requests minus the elevator’s floor, plus the absolute value of the lowest floor in the elevator’s current downward requests minus the up button’s floor.</p>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <p>Select the elevator closest to the floor where the up button was pressed and add the floor to its upward request list:</p>
+    <ul>
+      <li>If the elevator is currently stationary, there are two cases:
+        <ul>
+          <li>If the up button’s floor is higher than the elevator’s floor, add the request to <code class="language-plaintext highlighter-rouge">upRequest[elevatorIndex,floor]</code>, as the elevator will soon change to upward status and can process the request immediately.</li>
+          <li>If the up button’s floor is lower than the elevator’s floor, add the request to <code class="language-plaintext highlighter-rouge">waitUpRequest[elevatorIndex,floor]</code>, as the elevator needs to first change to downward status, then to upward status, before processing the request.</li>
+        </ul>
+      </li>
+      <li>If the elevator is currently moving upward, there are two cases:
+        <ul>
+          <li>If the up button’s floor is higher than the elevator’s floor, add the request to <code class="language-plaintext highlighter-rouge">upRequest[elevatorIndex,floor]</code>, as the elevator can respond to the request without changing status.</li>
+          <li>If the up button’s floor is lower than the elevator’s floor, add the request to <code class="language-plaintext highlighter-rouge">waitUpRequest[elevatorIndex,floor]</code>, as the elevator needs to change status to respond to the request.</li>
+        </ul>
+      </li>
+      <li>If the elevator is moving downward, add the request directly to <code class="language-plaintext highlighter-rouge">waitUpRequest[elevator,Index]</code>, as the elevator needs to change status to respond to the request.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="kt">int</span> <span class="nf">handleUpRequest</span><span class="p">(</span><span class="kt">int</span> <span class="n">floor</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">minDist</span> <span class="p">=</span> <span class="n">FloorsCount</span> <span class="p">+</span> <span class="m">1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">elevatorIndex</span> <span class="p">=</span> <span class="n">ElevatorsCount</span><span class="p">;</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">i</span><span class="p">&lt;</span><span class="n">ElevatorsCount</span><span class="p">;</span><span class="n">i</span><span class="p">++)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">currentFloor</span> <span class="p">=</span> <span class="n">elevators</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">();</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">alarm</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">continue</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">wait</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">currentFloor</span><span class="p">-</span><span class="n">floor</span><span class="p">)</span> <span class="p">&lt;</span> <span class="n">minDist</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">minDist</span><span class="p">=</span><span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">currentFloor</span><span class="p">-</span><span class="n">floor</span><span class="p">);</span>
+                <span class="n">elevatorIndex</span><span class="p">=</span><span class="n">i</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">up</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">currentFloor</span> <span class="p">&lt;=</span> <span class="n">floor</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">currentFloor</span><span class="p">-</span><span class="n">floor</span><span class="p">)&lt;</span><span class="n">minDist</span><span class="p">)</span>
+                <span class="p">{</span> 
+                    <span class="n">minDist</span> <span class="p">=</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">currentFloor</span><span class="p">-</span><span class="n">floor</span><span class="p">);</span>
+                    <span class="n">elevatorIndex</span> <span class="p">=</span> <span class="n">i</span><span class="p">;</span> 
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="k">else</span> <span class="k">if</span><span class="p">(</span><span class="n">currentFloor</span> <span class="p">&gt;</span> <span class="n">floor</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">int</span> <span class="n">tmp</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+                <span class="c1">// Find the highest floor in current upward requests</span>
+                <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="p">=</span><span class="n">FloorsCount</span><span class="p">-</span><span class="m">1</span><span class="p">;</span><span class="n">j</span><span class="p">&gt;=</span><span class="m">0</span><span class="p">;</span><span class="n">j</span><span class="p">--)</span>
+                <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">upRequest</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span>
+                    <span class="p">{</span>
+                        <span class="n">tmp</span> <span class="p">=</span> <span class="n">j</span><span class="p">;</span>
+                        <span class="k">break</span><span class="p">;</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="c1">// Calculate distance</span>
+                <span class="kt">int</span> <span class="n">dist</span> <span class="p">=</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">tmp</span> <span class="p">-</span> <span class="n">currentFloor</span><span class="p">)</span> <span class="p">+</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">tmp</span> <span class="p">-</span> <span class="n">floor</span><span class="p">);</span>
+                <span class="k">if</span><span class="p">(</span><span class="n">dist</span><span class="p">&lt;</span><span class="n">minDist</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">minDist</span><span class="p">=</span><span class="n">dist</span><span class="p">;</span>
+                    <span class="n">elevatorIndex</span> <span class="p">=</span> <span class="n">i</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">down</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">tmp</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+            <span class="c1">// Find the lowest floor in current downward requests</span>
+            <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">j</span><span class="p">&lt;</span><span class="n">FloorsCount</span><span class="p">;</span><span class="n">j</span><span class="p">++)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">downRequest</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">tmp</span> <span class="p">=</span> <span class="n">j</span><span class="p">;</span>
+                    <span class="k">break</span><span class="p">;</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+            <span class="kt">int</span> <span class="n">dist</span><span class="p">=</span><span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">tmp</span> <span class="p">-</span> <span class="n">currentFloor</span><span class="p">)</span> <span class="p">+</span> <span class="n">Math</span><span class="p">.</span><span class="nf">Abs</span><span class="p">(</span><span class="n">tmp</span> <span class="p">-</span> <span class="n">floor</span><span class="p">);</span>
+            <span class="k">if</span><span class="p">(</span><span class="n">dist</span><span class="p">&lt;</span><span class="n">minDist</span><span class="p">)</span> 
+            <span class="p">{</span>
+                <span class="n">minDist</span><span class="p">=</span><span class="n">dist</span><span class="p">;</span>
+                <span class="n">elevatorIndex</span> <span class="p">=</span> <span class="n">i</span><span class="p">;</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kt">int</span> <span class="n">currenFloor</span> <span class="p">=</span> <span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">wait</span><span class="p">)</span> 
+    <span class="p">{</span>
+        
+        <span class="k">if</span><span class="p">(</span><span class="n">floor</span> <span class="p">&gt;=</span> <span class="n">currenFloor</span><span class="p">)</span>
+            <span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">waitUpRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+        
+        <span class="c1">//upRequest[elevatorIndex, floor] = 1;</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">up</span><span class="p">)</span>
+        
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">floor</span> <span class="p">&gt;=</span> <span class="n">currenFloor</span><span class="p">)</span>
+            <span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="n">waitUpRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+        <span class="n">waitUpRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span><span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+
+    <span class="k">return</span> <span class="n">elevatorIndex</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>When a floor button is pressed, <code class="language-plaintext highlighter-rouge">upRequest</code> and <code class="language-plaintext highlighter-rouge">downRequest</code> are directly modified. When a floor lower than the elevator’s current floor is pressed in an upward-moving elevator, it will not be responded to. Similarly, when a floor higher than the current floor is pressed in a downward-moving elevator, it will not be responded to:</li>
+</ul>
+
+<div class="language-c# highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">void</span> <span class="nf">FloorButton_Click</span><span class="p">(</span><span class="kt">object</span> <span class="n">sender</span><span class="p">,</span> <span class="n">EventArgs</span> <span class="n">e</span><span class="p">,</span> <span class="kt">int</span> <span class="n">elevatorIndex</span><span class="p">,</span> <span class="kt">int</span> <span class="n">floor</span><span class="p">)</span>
+<span class="p">{</span>
+
+    <span class="n">Button</span> <span class="n">clickButton</span> <span class="p">=</span> <span class="n">sender</span> <span class="k">as</span> <span class="n">Button</span><span class="p">;</span>
+   
+    <span class="c1">// Handle floor button click event</span>
+    <span class="c1">//MessageBox.Show($"Floor {floor + 1} button of Elevator {elevatorIndex + 1} was clicked");</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">up</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">floor</span> <span class="p">&gt;=</span> <span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">())</span> 
+        <span class="p">{</span>
+            <span class="n">manage</span><span class="p">.</span><span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">clickButton</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">clickButton</span><span class="p">.</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getStatus</span><span class="p">()==</span><span class="n">status</span><span class="p">.</span><span class="n">down</span><span class="p">)</span> 
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">floor</span> <span class="p">&lt;=</span> <span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">manage</span><span class="p">.</span><span class="n">downRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">clickButton</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">clickButton</span><span class="p">.</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="k">else</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">floor</span> <span class="p">&gt;=</span> <span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="n">manage</span><span class="p">.</span><span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">clickButton</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">clickButton</span><span class="p">.</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+        <span class="k">else</span> 
+        <span class="p">{</span>
+            <span class="n">manage</span><span class="p">.</span><span class="n">downRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span><span class="n">floor</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span><span class="p">;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">clickButton</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">clickButton</span><span class="p">.</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">Green</span><span class="p">;</span>
+            <span class="p">}</span>
+
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="elevator-operation-logic">Elevator Operation Logic</h3>
+<ul>
+  <li>A separate thread is started for each elevator, with threads set as background threads. Each thread executes the <code class="language-plaintext highlighter-rouge">private void ElevatorRoutine(int elevatorIndex)</code> method:</li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">void</span> <span class="nf">StartElevatorThreads</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">i</span><span class="p">&lt;</span><span class="n">ElevatorsCount</span><span class="p">;</span><span class="n">i</span><span class="p">++)</span>
+    <span class="p">{</span>
+        <span class="kt">int</span> <span class="n">index</span> <span class="p">=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="n">Thread</span> <span class="n">elevatorThread</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Thread</span><span class="p">(()</span> <span class="p">=&gt;</span> <span class="nf">ElevatorRoutine</span><span class="p">(</span><span class="n">index</span><span class="p">))</span>
+        <span class="p">{</span>
+            <span class="n">IsBackground</span> <span class="p">=</span> <span class="k">true</span>
+        <span class="p">};</span>
+        <span class="n">elevatorThread</span><span class="p">.</span><span class="nf">Start</span><span class="p">();</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+  
+<span class="k">private</span> <span class="k">void</span> <span class="nf">ElevatorRoutine</span><span class="p">(</span><span class="kt">int</span> <span class="n">elevatorIndex</span><span class="p">)</span> 
+<span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span>
+    <span class="p">{</span>
+  
+        <span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+        <span class="nf">pullUpward</span><span class="p">(</span><span class="n">elevatorIndex</span><span class="p">);</span>
+        <span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+        <span class="nf">prepareForDown</span><span class="p">(</span><span class="n">elevatorIndex</span><span class="p">);</span>
+        <span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+        <span class="nf">pushDownward</span><span class="p">(</span><span class="n">elevatorIndex</span><span class="p">);</span>
+        <span class="n">Thread</span><span class="p">.</span><span class="nf">Sleep</span><span class="p">(</span><span class="m">500</span><span class="p">);</span>
+        <span class="nf">prepareForUp</span><span class="p">(</span><span class="n">elevatorIndex</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Upward requests are processed in <code class="language-plaintext highlighter-rouge">void pullUpward(int elevatorIndex)</code>, and downward requests are processed in <code class="language-plaintext highlighter-rouge">void pushDownward(int elevatorIndex)</code>.</li>
+  <li>Processing of <code class="language-plaintext highlighter-rouge">waitUpRequest</code> and <code class="language-plaintext highlighter-rouge">waitDownRequest</code> occurs in <code class="language-plaintext highlighter-rouge">prepareForUp</code> and <code class="language-plaintext highlighter-rouge">prepareForDown</code> respectively.</li>
+  <li>Threads are started in the ElevatorController’s initialization function:</li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="nf">ElevatorController</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">i</span><span class="p">&lt;</span><span class="n">elevators</span><span class="p">.</span><span class="n">Length</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span> 
+    <span class="p">{</span>
+        <span class="n">elevators</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="k">new</span> <span class="nf">Elevator</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">i</span> <span class="p">&lt;</span> <span class="n">ElevatorsCount</span><span class="p">;</span><span class="n">i</span><span class="p">++)</span>
+    <span class="p">{</span>
+        <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">j</span><span class="p">=</span><span class="m">0</span><span class="p">;</span><span class="n">j</span> <span class="p">&lt;</span> <span class="n">FloorsCount</span><span class="p">;</span><span class="n">j</span><span class="p">++)</span>
+        <span class="p">{</span>
+            <span class="n">upRequest</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+            <span class="n">downRequest</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+            <span class="n">waitUpRequest</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+            <span class="n">waitDownRequest</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="nf">StartElevatorThreads</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="event-definitions">Event Definitions</h3>
+<ul>
+  <li>Five events are defined in ElevatorController:</li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">event</span> <span class="n">Action</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">ElevatorMoved</span><span class="p">;</span>
+<span class="k">public</span> <span class="k">event</span> <span class="n">Action</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">ElevatorRequestProcessed</span><span class="p">;</span>
+<span class="k">public</span> <span class="k">event</span> <span class="n">Action</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">&gt;</span> <span class="n">ElevatorExternalRequestProcessed</span><span class="p">;</span>
+<span class="k">public</span> <span class="k">event</span> <span class="n">Action</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">OpenDoorPressed</span><span class="p">;</span>
+<span class="k">public</span> <span class="k">event</span> <span class="n">Action</span><span class="p">&lt;</span><span class="kt">int</span><span class="p">&gt;</span> <span class="n">CloseDoorPressed</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>These are used to handle elevator movement, processing of elevator floor requests and external requests, and door open/close button presses.</p>
+
+<ul>
+  <li>These events are subscribed to in Form1:</li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">manage</span><span class="p">.</span><span class="n">ElevatorMoved</span> <span class="p">+=</span> <span class="n">Manage_ElevatorMoved</span><span class="p">;</span>
+<span class="n">manage</span><span class="p">.</span><span class="n">ElevatorRequestProcessed</span> <span class="p">+=</span> <span class="n">Manage_ElevatorRequestProcessed</span><span class="p">;</span>
+<span class="n">manage</span><span class="p">.</span><span class="n">ElevatorExternalRequestProcessed</span> <span class="p">+=</span> <span class="n">Manage_ExternalRequestProcessed</span><span class="p">;</span>
+<span class="n">manage</span><span class="p">.</span><span class="n">OpenDoorPressed</span> <span class="p">+=</span> <span class="n">Manage_OpenDoorPressed</span><span class="p">;</span>
+<span class="n">manage</span><span class="p">.</span><span class="n">CloseDoorPressed</span> <span class="p">+=</span> <span class="n">Manage_CloseDoorPressed</span><span class="p">;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>Event subscription is a common pattern in software design, belonging to the broader publish-subscribe (pub-sub) pattern. In this pattern, components can announce (publish) the occurrence of certain events, while other components can express interest in these events (subscribe). When events occur, these subscribing components automatically receive notifications and respond accordingly.</p>
+  </li>
+  <li>
+    <p>For example, in the <code class="language-plaintext highlighter-rouge">pullUpward</code> method of ElevatorController, when executing the following code segment, the program checks whether there is a request at the elevator’s current floor. If there is, the request is responded to and the event is triggered. Then, methods that subscribed to the event will be called, the highlighting of floor buttons and up buttons will disappear, and the elevator’s position will be updated:</p>
+  </li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">()</span> <span class="p">!=</span> <span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getTargetFloor</span><span class="p">())</span>
+<span class="p">{</span>
+    <span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">move</span><span class="p">();</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">()]</span> <span class="p">==</span> <span class="m">1</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">()]</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+        <span class="n">ElevatorRequestProcessed</span><span class="p">.</span><span class="nf">Invoke</span><span class="p">(</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">());</span>
+        <span class="n">ElevatorExternalRequestProcessed</span><span class="p">.</span><span class="nf">Invoke</span><span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">(),</span> <span class="m">1</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">ElevatorMoved</span><span class="p">.</span><span class="nf">Invoke</span><span class="p">(</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">());</span>
+<span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">elevators</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">()</span> <span class="p">==</span> <span class="n">i</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">upRequest</span><span class="p">[</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span>
+    <span class="n">ElevatorRequestProcessed</span><span class="p">.</span><span class="nf">Invoke</span><span class="p">(</span><span class="n">elevatorIndex</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+    <span class="n">ElevatorExternalRequestProcessed</span><span class="p">.</span><span class="nf">Invoke</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="m">1</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="timer-definitions">Timer Definitions</h3>
+<ul>
+  <li>
+    <p>Timers in programming are used to repeatedly execute certain tasks at set intervals or to execute tasks after a certain delay. The code <code class="language-plaintext highlighter-rouge">checkElevatorTimer.Elapsed += CheckElevatorStatus;</code> binds the <code class="language-plaintext highlighter-rouge">CheckElevatorStatus</code> method to the timer’s <code class="language-plaintext highlighter-rouge">Elapsed</code> event. This means that whenever the timer’s cycle ends, the <code class="language-plaintext highlighter-rouge">CheckElevatorStatus</code> method will be automatically called. <code class="language-plaintext highlighter-rouge">AutoReset = true</code> sets the timer to automatically restart after triggering the <code class="language-plaintext highlighter-rouge">Elapsed</code> event, making it a repeating periodic timer.</p>
+  </li>
+  <li>
+    <p>Three timers are used in the project: one for playing animations, one for checking elevator status, and one for updating the passenger list:</p>
+  </li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">void</span> <span class="nf">InitializeTimer</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">animationTimer</span><span class="p">.</span><span class="n">Interval</span> <span class="p">=</span> <span class="m">200</span><span class="p">;</span> <span class="c1">// Set animation frame switching interval to 200 milliseconds</span>
+    <span class="n">animationTimer</span><span class="p">.</span><span class="n">Tick</span> <span class="p">+=</span> <span class="k">new</span> <span class="nf">EventHandler</span><span class="p">(</span><span class="n">AnimationTimer_Tick</span><span class="p">);</span>
+    <span class="n">updateTimer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Windows</span><span class="p">.</span><span class="n">Forms</span><span class="p">.</span><span class="nf">Timer</span><span class="p">();</span>
+    <span class="n">updateTimer</span><span class="p">.</span><span class="n">Interval</span> <span class="p">=</span> <span class="m">1000</span><span class="p">;</span>  <span class="c1">// Set update interval to 1000 milliseconds (1 second)</span>
+    <span class="n">updateTimer</span><span class="p">.</span><span class="n">Tick</span> <span class="p">+=</span> <span class="k">new</span> <span class="nf">EventHandler</span><span class="p">(</span><span class="n">UpdateTimer_Tick</span><span class="p">);</span>
+    <span class="n">updateTimer</span><span class="p">.</span><span class="nf">Start</span><span class="p">();</span>
+    <span class="c1">// Initialize timer</span>
+    <span class="n">checkElevatorTimer</span> <span class="p">=</span> <span class="k">new</span> <span class="n">System</span><span class="p">.</span><span class="n">Timers</span><span class="p">.</span><span class="nf">Timer</span><span class="p">(</span><span class="m">1000</span><span class="p">);</span> <span class="c1">// Set time interval to 1 second</span>
+    <span class="n">checkElevatorTimer</span><span class="p">.</span><span class="n">Elapsed</span> <span class="p">+=</span> <span class="n">CheckElevatorStatus</span><span class="p">;</span>
+    <span class="n">checkElevatorTimer</span><span class="p">.</span><span class="n">AutoReset</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+    <span class="n">checkElevatorTimer</span><span class="p">.</span><span class="n">Enabled</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span> <span class="c1">// Initial state is disabled</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">CheckElevatorStatus</code> periodically checks whether any elevator has reached a passenger’s destination floor and updates the elevator’s status label:</li>
+</ul>
+
+<div class="language-csharp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">async</span> <span class="k">void</span> <span class="nf">CheckElevatorStatus</span><span class="p">(</span><span class="n">Object</span> <span class="n">source</span><span class="p">,</span> <span class="n">System</span><span class="p">.</span><span class="n">Timers</span><span class="p">.</span><span class="n">ElapsedEventArgs</span> <span class="n">e</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// Execute operations that need to be completed on the UI thread within Task.Run</span>
+    <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">Run</span><span class="p">(()</span> <span class="p">=&gt;</span>
+    <span class="p">{</span>
+        <span class="nf">Invoke</span><span class="p">((</span><span class="n">MethodInvoker</span><span class="p">)</span><span class="k">delegate</span>
+        <span class="p">{</span>
+            <span class="k">foreach</span> <span class="p">(</span><span class="kt">var</span> <span class="n">passenger</span> <span class="k">in</span> <span class="n">passengers</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(!</span><span class="n">passenger</span><span class="p">.</span><span class="n">isHandled</span> <span class="p">&amp;&amp;</span> <span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">passenger</span><span class="p">.</span><span class="n">assignedElevator</span><span class="p">].</span><span class="nf">getCurrentFloor</span><span class="p">()</span> <span class="p">==</span> <span class="n">passenger</span><span class="p">.</span><span class="n">currentFloor</span><span class="p">)</span>
+                <span class="p">{</span>
+                    <span class="n">passenger</span><span class="p">.</span><span class="n">isHandled</span> <span class="p">=</span> <span class="k">true</span><span class="p">;</span>
+                    <span class="n">messageBox</span><span class="p">.</span><span class="nf">AppendText</span><span class="p">(</span><span class="s">$"Please press the open door button for Elevator </span><span class="p">{</span><span class="n">passenger</span><span class="p">.</span><span class="n">assignedElevator</span> <span class="p">+</span> <span class="m">1</span><span class="p">}</span><span class="s"> to let the passenger in.</span><span class="p">{</span><span class="n">Environment</span><span class="p">.</span><span class="n">NewLine</span><span class="p">}</span><span class="s">"</span><span class="p">);</span>
+
+
+                    <span class="kt">var</span> <span class="n">openTcs</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TaskCompletionSource</span><span class="p">&lt;</span><span class="kt">bool</span><span class="p">&gt;();</span>
+                    <span class="n">openDoorTcs</span><span class="p">[</span><span class="n">passenger</span><span class="p">.</span><span class="n">assignedElevator</span><span class="p">]</span> <span class="p">=</span> <span class="n">openTcs</span><span class="p">;</span>
+                    <span class="n">openTcs</span><span class="p">.</span><span class="n">Task</span><span class="p">.</span><span class="nf">ContinueWith</span><span class="p">(</span><span class="k">async</span> <span class="n">t</span> <span class="p">=&gt;</span>
+                    <span class="p">{</span>
+                        <span class="c1">// Wait two seconds, then execute subsequent logic</span>
+                        <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">Delay</span><span class="p">(</span><span class="m">2000</span><span class="p">);</span>
+                        <span class="n">openDoorButtons</span><span class="p">[</span><span class="n">passenger</span><span class="p">.</span><span class="n">assignedElevator</span><span class="p">].</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">;</span>
+                        <span class="kt">var</span> <span class="n">closeTcs</span> <span class="p">=</span> <span class="k">new</span> <span class="n">TaskCompletionSource</span><span class="p">&lt;</span><span class="kt">bool</span><span class="p">&gt;();</span>
+                        <span class="n">closeDoorTcs</span><span class="p">[</span><span class="n">passenger</span><span class="p">.</span><span class="n">assignedElevator</span><span class="p">]</span> <span class="p">=</span> <span class="n">closeTcs</span><span class="p">;</span>
+                        <span class="k">await</span> <span class="n">closeTcs</span><span class="p">.</span><span class="n">Task</span><span class="p">;</span>
+
+                        <span class="c1">// Delay two seconds after closing door</span>
+                        <span class="k">await</span> <span class="n">Task</span><span class="p">.</span><span class="nf">Delay</span><span class="p">(</span><span class="m">2000</span><span class="p">);</span>
+                        <span class="n">closeDoorButtons</span><span class="p">[</span><span class="n">passenger</span><span class="p">.</span><span class="n">assignedElevator</span><span class="p">].</span><span class="n">BackColor</span> <span class="p">=</span> <span class="n">Color</span><span class="p">.</span><span class="n">White</span><span class="p">;</span>
+                        <span class="nf">Invoke</span><span class="p">((</span><span class="n">MethodInvoker</span><span class="p">)(()</span> <span class="p">=&gt;</span> <span class="nf">toTargetFloorOfPassenger</span><span class="p">(</span><span class="n">passenger</span><span class="p">.</span><span class="n">id</span><span class="p">,</span> <span class="n">passenger</span><span class="p">.</span><span class="n">assignedElevator</span><span class="p">,</span> <span class="n">passenger</span><span class="p">.</span><span class="n">targetFloor</span><span class="p">)));</span>
+                    <span class="p">},</span> <span class="n">TaskScheduler</span><span class="p">.</span><span class="nf">FromCurrentSynchronizationContext</span><span class="p">());</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+    <span class="p">});</span>
+
+
+    <span class="c1">// Other status updates must also be executed on the UI thread</span>
+    <span class="nf">Invoke</span><span class="p">((</span><span class="n">MethodInvoker</span><span class="p">)</span><span class="k">delegate</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="p">=</span> <span class="m">0</span><span class="p">;</span> <span class="n">i</span> <span class="p">&lt;</span> <span class="n">ElevatorsCount</span><span class="p">;</span> <span class="n">i</span><span class="p">++)</span>
+        <span class="p">{</span>
+            <span class="n">Elevator</span> <span class="n">elevator</span> <span class="p">=</span> <span class="n">manage</span><span class="p">.</span><span class="n">elevators</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+            <span class="n">status</span> <span class="n">currentStatus</span> <span class="p">=</span> <span class="n">elevator</span><span class="p">.</span><span class="nf">getStatus</span><span class="p">();</span>
+            <span class="kt">int</span> <span class="n">capacity</span> <span class="p">=</span> <span class="n">elevator</span><span class="p">.</span><span class="nf">getCapacity</span><span class="p">();</span>
+            <span class="n">elevatorCapacityLabels</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">Text</span> <span class="p">=</span> <span class="s">$"Capacity: </span><span class="p">{</span><span class="n">capacity</span><span class="p">}</span><span class="s">"</span><span class="p">;</span>
+
+            <span class="c1">// Update status label colors and text</span>
+            <span class="nf">UpdateElevatorStatusLabels</span><span class="p">(</span><span class="n">currentStatus</span><span class="p">,</span> <span class="n">i</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+</code></pre></div></div>]]></content><author><name>yik</name></author><category term="Algorithm" /><summary type="html"><![CDATA[Development Environment]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/elevator/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/elevator/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">力扣第1219题黄金矿工时间复杂度新解</title><link href="http://localhost:4000/mundana-theme-jekyll/LeetCode1219/" rel="alternate" type="text/html" title="力扣第1219题黄金矿工时间复杂度新解" /><published>2025-12-11T00:00:00+00:00</published><updated>2025-12-11T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/LeetCode1219</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/LeetCode1219/"><![CDATA[<h2 id="算法思路">算法思路</h2>
+
+<p>用二维向量存储金矿的分布情况。算法首先遍历整个金矿，对于不为0的坐标将其设为起点，用DFS回溯搜索整张图，搜索过程中将已走过的坐标标记（金子数置0），同时记录当前收集到的金子数量。</p>
+
+<p>类中有一个 <code class="language-plaintext highlighter-rouge">max</code> 变量记录最多收集到的金子数量，一个 <code class="language-plaintext highlighter-rouge">path</code> 变量记录最优情况的路径。当找到收集金子更多的路径时，会同时更新 <code class="language-plaintext highlighter-rouge">max</code> 与 <code class="language-plaintext highlighter-rouge">path</code>。回溯时，记录当前路径的栈 pop 一次，并释放标记。由此，即可找出收集黄金最多的路径与金子数。</p>
+
+<h2 id="复杂度分析">复杂度分析</h2>
+
+<p>鉴于搜索的结果取决于对有金子区域的遍历，因此设有金子区域一共有 \(k\) 个。再设行数为 \(m\)，列数为 \(n\)。显然，\(k \le mn\)，因此后续涉及 \(\min\{mn, k\}\) 运算时可以直接化简为 \(k\)。</p>
+
+<p>在算法中使用了两个栈存储路径，因此空间复杂度为 \(O(k+k)\)，即 \(O(k)\)。</p>
+
+<p>将每次向前探索作为基本操作。每个有金子的地点都可以作为起点开始DFS遍历，因此一共有 \(k\) 次遍历。在每次遍历中，除第一个地点外，每个地点都有最多三个不同的方向继续前进遍历，因此探索操作至少有 $3k$ 次。可知时间复杂度最差为 \(O(3^k)\)。</p>
+
+<p>但是自己输入一个 \(k=25\) 的地图数据发现执行效率相当高，并没有体现出以3为底指数函数的低效率，推断“每个起点的总探索操作上限 \(3^k\) 次”这个数据将上限抬得过高。</p>
+
+<p>因为探索操作都产生在有金子的格子里，所以将其单独拿出分析，对于任何一条收集路线，除开首尾两格，中间的格子被路线穿过都不外乎如下七种情况：</p>
+
+<ol>
+  <li>左进上出或上进左出——简写为 <strong>LU</strong></li>
+  <li>右进上出或上进右出——简写为 <strong>RU</strong></li>
+  <li>还有 <strong>LD</strong>、<strong>RD</strong>、<strong>LR</strong>、<strong>UD</strong></li>
+  <li>没有被路线穿过的情况，记为 <strong>N</strong></li>
+</ol>
+
+<p>这样原先由每个格子三种探索方向构成的解空间树就变成了对每个格子其中穿过情况生成解空间树。</p>
+
+<p>再将整张图中所有有金子的格子（除首尾）如下交错划分成黑白两种：（此处为方便说明假设它们恰好聚在这 \(3 \times 3\) 格子里）</p>
+
+<p><img src="/mundana-theme-jekyll/assets/images/leetcode1219/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
+
+<p>从刚才的 7 种情况可以知道，如果我们确定每个黑色格子的情况，白色格子的情况就被确定了，所以我们只需要考虑黑色格子，显然这样的划分形成了 \(k/2\) 数量级的黑格子。</p>
+
+<p>解空间树生成时，遍历 B 的 7 种情况前它周围四个角的黑格情况已经被确定了（除开首尾，这对时间复杂度分析没有影响），图中假设 A 被确定为 LR，那么 B 只剩 LU、RU、UD、N 四种情况。其它同理，因此实际上生成解空间树时每个黑格子下一步能够做出的探索选择只有 4 种，时间复杂度最差不超过 \(O(4^{k/2}) = O(2^k)\)。</p>
+
+<p>实际情况下因为有金子的格子不会总是聚在一起，因此每个黑格子的选择大概率会少于 4 种，时间复杂度会更低。</p>
+
+<p>综上，最差时间复杂度不超过 \(O(2^k)\)。</p>
+
+<p><em>本题恰好是算法课作业遇到的，觉得网上的时间分析和体感不同，稍作改进。</em></p>]]></content><author><name>sam</name></author><category term="算法" /><summary type="html"><![CDATA[算法思路]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/leetcode1219/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/leetcode1219/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">关于本站 - About This Website</title><link href="http://localhost:4000/mundana-theme-jekyll/About-This-Website/" rel="alternate" type="text/html" title="关于本站 - About This Website" /><published>2025-11-10T00:00:00+00:00</published><updated>2025-11-10T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/About%20This%20Website</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/About-This-Website/"><![CDATA[<p>Welcome to Hyrule Royal Warehouse.</p>
+
+<p>This is a personal blog website with no commercial intent. Here you can find blogs about computing, coding, applications and theories behind them. You can find all blogs bilingual with Chinese and English. They might not be side-by-side, but both cover same contents.</p>
+
+<p>All blogs are free to share and repost with citation. You can also <strong>buy me a coffee</strong> if you find the website useful. Really appreciate that.</p>
+
+<p>欢迎来到海拉鲁皇家仓库。
+本站无商业用途，内容涵盖计算机、代码、应用及其背后的支持理论。所有文章都一式两份（中英）。转载文章需标明来源。在首页可以打赏。</p>]]></content><author><name>sam</name></author><category term="入门" /><category term="Start" /><category term="sticky" /><summary type="html"><![CDATA[测试文章]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/About/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/About/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
