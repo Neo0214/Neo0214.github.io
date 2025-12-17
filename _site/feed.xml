@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/mundana-theme-jekyll/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/mundana-theme-jekyll/" rel="alternate" type="text/html" /><updated>2025-12-15T16:43:55+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/feed.xml</id><title type="html">Hyrule Royal Warehouse</title><subtitle>Mundana is a free Jekyll theme for awesome people like you, Medium like.</subtitle><entry><title type="html">A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold</title><link href="http://localhost:4000/mundana-theme-jekyll/LeetCode1219-en/" rel="alternate" type="text/html" title="A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/LeetCode1219-en</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/LeetCode1219-en/"><![CDATA[<h2 id="algorithm-approach">Algorithm Approach</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-12-17T11:30:52+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Hyrule Royal Warehouse</title><subtitle>Mundana is a free Jekyll theme for awesome people like you, Medium like.</subtitle><entry><title type="html">A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold</title><link href="http://localhost:4000/LeetCode1219-en/" rel="alternate" type="text/html" title="A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/LeetCode1219-en</id><content type="html" xml:base="http://localhost:4000/LeetCode1219-en/"><![CDATA[<h2 id="algorithm-approach">Algorithm Approach</h2>
 
 <p>A 2D vector is used to store the distribution of the gold mines. The algorithm first traverses the entire grid. Any coordinate with a non-zero value is treated as a starting point. We employ DFS (Depth-First Search) with backtracking to search the entire graph. During the search process, visited coordinates are marked (by setting the gold amount to 0), while tracking the currently accumulated gold.</p>
 
@@ -27,7 +27,7 @@
 
 <p>Next, we divide all cells containing gold (excluding the start and end points) into a staggered black-and-white pattern as follows: (For convenience, assume they are clustered in a \(3 \times 3\) grid).</p>
 
-<p><img src="/mundana-theme-jekyll/assets/images/leetcode1219/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
+<p><img src="/assets/images/leetcode1219/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
 
 <p>From the seven patterns mentioned above, we know that if the state of every black cell is determined, the state of the white cells is implicitly determined. Therefore, we only need to consider the black cells. Clearly, this partition results in approximately \(k/2\) black cells.</p>
 
@@ -37,7 +37,7 @@
 
 <p>In summary, the worst-case time complexity does not exceed \(O(2^k)\).</p>
 
-<p><em>I encountered this problem during an algorithm course assignment. I felt the online time complexity analysis differed from my practical experience, so I made some improvements here.</em></p>]]></content><author><name>sam</name></author><category term="Algorithm" /><summary type="html"><![CDATA[Algorithm Approach]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/leetcode1219/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/leetcode1219/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">电梯调度 - 同济大学操作系统课设</title><link href="http://localhost:4000/mundana-theme-jekyll/Elevator/" rel="alternate" type="text/html" title="电梯调度 - 同济大学操作系统课设" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/Elevator</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/Elevator/"><![CDATA[<h2 id="开发环境">开发环境</h2>
+<p><em>I encountered this problem during an algorithm course assignment. I felt the online time complexity analysis differed from my practical experience, so I made some improvements here.</em></p>]]></content><author><name>sam</name></author><category term="Algorithm" /><summary type="html"><![CDATA[Algorithm Approach]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/leetcode1219/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/leetcode1219/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">电梯调度 - 同济大学操作系统课设</title><link href="http://localhost:4000/Elevator/" rel="alternate" type="text/html" title="电梯调度 - 同济大学操作系统课设" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/Elevator</id><content type="html" xml:base="http://localhost:4000/Elevator/"><![CDATA[<h2 id="开发环境">开发环境</h2>
 
 <ul>
   <li><strong>开发环境</strong>：Windows 11</li>
@@ -61,7 +61,7 @@
 </ol>
 
 <h2 id="界面">界面</h2>
-<p><img src="/mundana-theme-jekyll/assets/images/elevator/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
+<p><img src="/assets/images/elevator/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
 <h2 id="操作指南">操作指南</h2>
 <ul>
   <li>用户可以随意点击数字键和上行下行键让电梯在没有乘客的情况下“空跑”，便于观察电梯调度算法的实际表现。</li>
@@ -232,7 +232,7 @@
 
         <ul>
           <li>电梯当前所在楼层大于上行键所在楼层，这个距离等于该电梯目前向上请求中最高的层减去电梯所在楼层的绝对值，加上电梯目前向上请求中最高的层减去上行键所在楼层的绝对值；
-<img src="/mundana-theme-jekyll/assets/images/elevator/fig2.jpg" alt="Figure2" class="mx-auto d-block" /></li>
+<img src="/assets/images/elevator/fig2.jpg" alt="Figure2" class="mx-auto d-block" /></li>
           <li>电梯当前所在楼层小于上行键所在楼层，这个距离等于电梯当前所在楼层减去上行键所在楼层的绝对值；</li>
         </ul>
       </li>
@@ -529,7 +529,7 @@ Invoke((MethodInvoker)delegate
         UpdateElevatorStatusLabels(currentStatus, i);
     }
 }); } ```
-</code></pre></div></div>]]></content><author><name>yik</name></author><category term="算法" /><summary type="html"><![CDATA[开发环境]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/elevator/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/elevator/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Elevator Scheduling - Tongji University Operating System Course Project</title><link href="http://localhost:4000/mundana-theme-jekyll/Elevator-en/" rel="alternate" type="text/html" title="Elevator Scheduling - Tongji University Operating System Course Project" /><published>2025-12-14T00:00:00+00:00</published><updated>2025-12-14T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/Elevator-en</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/Elevator-en/"><![CDATA[<h2 id="development-environment">Development Environment</h2>
+</code></pre></div></div>]]></content><author><name>yik</name></author><category term="算法" /><summary type="html"><![CDATA[开发环境]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/elevator/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/elevator/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Elevator Scheduling - Tongji University Operating System Course Project</title><link href="http://localhost:4000/Elevator-en/" rel="alternate" type="text/html" title="Elevator Scheduling - Tongji University Operating System Course Project" /><published>2025-12-14T00:00:00+00:00</published><updated>2025-12-14T00:00:00+00:00</updated><id>http://localhost:4000/Elevator-en</id><content type="html" xml:base="http://localhost:4000/Elevator-en/"><![CDATA[<h2 id="development-environment">Development Environment</h2>
 
 <ul>
   <li><strong>Development Environment</strong>: Windows 11</li>
@@ -553,7 +553,7 @@ Invoke((MethodInvoker)delegate
 </ol>
 
 <h2 id="user-interface">User Interface</h2>
-<p><img src="/mundana-theme-jekyll/assets/images/elevator/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
+<p><img src="/assets/images/elevator/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
 
 <h2 id="user-guide">User Guide</h2>
 <ul>
@@ -730,7 +730,7 @@ Invoke((MethodInvoker)delegate
 
         <ul>
           <li>If the elevator’s current floor is higher than the up button’s floor, the distance equals the absolute value of the highest floor in the elevator’s current upward requests minus the elevator’s floor, plus the absolute value of the highest floor in the elevator’s current upward requests minus the up button’s floor.
-<img src="/mundana-theme-jekyll/assets/images/elevator/fig2.jpg" alt="Figure2" class="mx-auto d-block" /></li>
+<img src="/assets/images/elevator/fig2.jpg" alt="Figure2" class="mx-auto d-block" /></li>
           <li>If the elevator’s current floor is lower than the up button’s floor, the distance equals the absolute value of the elevator’s current floor minus the up button’s floor.</li>
         </ul>
       </li>
@@ -1114,7 +1114,7 @@ Invoke((MethodInvoker)delegate
         <span class="p">}</span>
     <span class="p">});</span>
 <span class="p">}</span>
-</code></pre></div></div>]]></content><author><name>yik</name></author><category term="Algorithm" /><summary type="html"><![CDATA[Development Environment]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/elevator/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/elevator/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">力扣第1219题黄金矿工时间复杂度新解</title><link href="http://localhost:4000/mundana-theme-jekyll/LeetCode1219/" rel="alternate" type="text/html" title="力扣第1219题黄金矿工时间复杂度新解" /><published>2025-12-11T00:00:00+00:00</published><updated>2025-12-11T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/LeetCode1219</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/LeetCode1219/"><![CDATA[<h2 id="算法思路">算法思路</h2>
+</code></pre></div></div>]]></content><author><name>yik</name></author><category term="Algorithm" /><summary type="html"><![CDATA[Development Environment]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/elevator/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/elevator/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">力扣第1219题黄金矿工时间复杂度新解</title><link href="http://localhost:4000/LeetCode1219/" rel="alternate" type="text/html" title="力扣第1219题黄金矿工时间复杂度新解" /><published>2025-12-11T00:00:00+00:00</published><updated>2025-12-11T00:00:00+00:00</updated><id>http://localhost:4000/LeetCode1219</id><content type="html" xml:base="http://localhost:4000/LeetCode1219/"><![CDATA[<h2 id="算法思路">算法思路</h2>
 
 <p>用二维向量存储金矿的分布情况。算法首先遍历整个金矿，对于不为0的坐标将其设为起点，用DFS回溯搜索整张图，搜索过程中将已走过的坐标标记（金子数置0），同时记录当前收集到的金子数量。</p>
 
@@ -1143,7 +1143,7 @@ Invoke((MethodInvoker)delegate
 
 <p>再将整张图中所有有金子的格子（除首尾）如下交错划分成黑白两种：（此处为方便说明假设它们恰好聚在这 \(3 \times 3\) 格子里）</p>
 
-<p><img src="/mundana-theme-jekyll/assets/images/leetcode1219/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
+<p><img src="/assets/images/leetcode1219/fig1.png" alt="Figure1" class="mx-auto d-block" /></p>
 
 <p>从刚才的 7 种情况可以知道，如果我们确定每个黑色格子的情况，白色格子的情况就被确定了，所以我们只需要考虑黑色格子，显然这样的划分形成了 \(k/2\) 数量级的黑格子。</p>
 
@@ -1153,11 +1153,11 @@ Invoke((MethodInvoker)delegate
 
 <p>综上，最差时间复杂度不超过 \(O(2^k)\)。</p>
 
-<p><em>本题恰好是算法课作业遇到的，觉得网上的时间分析和体感不同，稍作改进。</em></p>]]></content><author><name>sam</name></author><category term="算法" /><summary type="html"><![CDATA[算法思路]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/leetcode1219/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/leetcode1219/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">关于本站 - About This Website</title><link href="http://localhost:4000/mundana-theme-jekyll/About-This-Website/" rel="alternate" type="text/html" title="关于本站 - About This Website" /><published>2025-11-10T00:00:00+00:00</published><updated>2025-11-10T00:00:00+00:00</updated><id>http://localhost:4000/mundana-theme-jekyll/About%20This%20Website</id><content type="html" xml:base="http://localhost:4000/mundana-theme-jekyll/About-This-Website/"><![CDATA[<p>Welcome to Hyrule Royal Warehouse.</p>
+<p><em>本题恰好是算法课作业遇到的，觉得网上的时间分析和体感不同，稍作改进。</em></p>]]></content><author><name>sam</name></author><category term="算法" /><summary type="html"><![CDATA[算法思路]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/leetcode1219/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/leetcode1219/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">关于本站 - About This Website</title><link href="http://localhost:4000/About-This-Website/" rel="alternate" type="text/html" title="关于本站 - About This Website" /><published>2025-11-10T00:00:00+00:00</published><updated>2025-11-10T00:00:00+00:00</updated><id>http://localhost:4000/About%20This%20Website</id><content type="html" xml:base="http://localhost:4000/About-This-Website/"><![CDATA[<p>Welcome to Hyrule Royal Warehouse.</p>
 
 <p>This is a personal blog website with no commercial intent. Here you can find blogs about computing, coding, applications and theories behind them. You can find all blogs bilingual with Chinese and English. They might not be side-by-side, but both cover same contents.</p>
 
 <p>All blogs are free to share and repost with citation. You can also <strong>buy me a coffee</strong> if you find the website useful. Really appreciate that.</p>
 
 <p>欢迎来到海拉鲁皇家仓库。
-本站无商业用途，内容涵盖计算机、代码、应用及其背后的支持理论。所有文章都一式两份（中英）。转载文章需标明来源。在首页可以打赏。</p>]]></content><author><name>sam</name></author><category term="入门" /><category term="Start" /><category term="sticky" /><summary type="html"><![CDATA[测试文章]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/mundana-theme-jekyll/assets/images/About/cover.jpg" /><media:content medium="image" url="http://localhost:4000/mundana-theme-jekyll/assets/images/About/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
+本站无商业用途，内容涵盖计算机、代码、应用及其背后的支持理论。所有文章都一式两份（中英）。转载文章需标明来源。在首页可以打赏。</p>]]></content><author><name>sam</name></author><category term="入门" /><category term="Start" /><category term="sticky" /><summary type="html"><![CDATA[测试文章]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/About/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/About/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry></feed>
