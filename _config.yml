@@ -5,8 +5,8 @@ logo: 'assets/images/logo.png'
 favicon: 'assets/images/favicon.ico'
 #baseurl: '/mundana-theme-jekyll'
 #disqus: 'demowebsite'
-url: ''
-#baseurl: 'https://Neo0214.github.io'
+url: 'https://Neo0214.github.io'
+baseurl: ''
 email: 'cz1325@ic.ac.uk'
 # mailchimp-list: 'https://wowthemes.us11.list-manage.com/subscribe/post?u=8aeb20a530e124561927d3bd8&amp;id=8c3d2d214b'
 
@@ -24,7 +24,7 @@ authors:
     sam:
       name:           C.R. Zhang
       display_name:   Mr.Zhang
-      avatar:         /assets/images/avatar/cr.jpg
+      avatar:         assets/images/avatar/cr.jpg
       email:          cz1325@ic.ac.uk
       web:            https://github.com/Neo0214
       bio:            "Main developer of this site."
@@ -32,7 +32,7 @@ authors:
     yik:
       name:           C.Y. Wang
       display_name:   Miss.Wang
-      avatar:         /assets/images/avatar/cy.jpg
+      avatar:         assets/images/avatar/cy.jpg
       email:          kikikiki43299@gmail.com
       web:            https://github.com/kiy-00
       bio:            "Co-blogger of this site."

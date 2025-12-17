@@ -1,4 +1,338 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-12-17T11:30:52+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Hyrule Royal Warehouse</title><subtitle>Mundana is a free Jekyll theme for awesome people like you, Medium like.</subtitle><entry><title type="html">A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold</title><link href="http://localhost:4000/LeetCode1219-en/" rel="alternate" type="text/html" title="A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/LeetCode1219-en</id><content type="html" xml:base="http://localhost:4000/LeetCode1219-en/"><![CDATA[<h2 id="algorithm-approach">Algorithm Approach</h2>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-12-17T12:52:01+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Hyrule Royal Warehouse</title><subtitle>Mundana is a free Jekyll theme for awesome people like you, Medium like.</subtitle><entry><title type="html">Optimization Schemes for Cache Directory Coherence Protocols in Multi-Core Architectures</title><link href="http://localhost:4000/Cache-en/" rel="alternate" type="text/html" title="Optimization Schemes for Cache Directory Coherence Protocols in Multi-Core Architectures" /><published>2025-12-17T00:00:00+00:00</published><updated>2025-12-17T00:00:00+00:00</updated><id>http://localhost:4000/Cache-en</id><content type="html" xml:base="http://localhost:4000/Cache-en/"><![CDATA[<p>In multi-core system architectures, cache coherence protocols are primarily classified into snooping protocols and directory protocols, with the latter generally being considered superior. In classic directory schemes, every data block has a corresponding directory entry, which results in significant storage overhead. Consequently, sparse directories can be employed to reduce costs by maintaining information only for data currently cached. The Cuckoo directory, which improves upon the sparse directory using hash tables, represents a robust solution. A potentially superior alternative is the Stash directory, which incorporates a flag bit in the directory to distinguish cache states, further minimizing performance loss. Both sparse directory schemes offer significant improvements over traditional directories. Based on theoretical analysis, their practical feasibility can be further verified through simulation.</p>
+
+<h2 id="1-introduction">1. Introduction</h2>
+
+<p>With the evolution of computer systems, multi-core and many-core architectures have become essential for achieving high performance and parallel computing. In multi-core architectures, the Cache serves as a critical component, playing a vital role in accelerating data access and enhancing system performance. However, read and write operations across private caches of multiple cores can lead to inconsistency issues. This has led to the development of numerous coherence protocols, among which the directory coherence protocol stands out for its scalability. Nevertheless, as the number of cores increases and shared data grows, traditional directory-based schemes face the challenge of excessive storage and access overheads. This article analyzes existing sparse directory schemes and their optimization effects on traditional directory-based protocols within the context of distributed storage in homogeneous multi-core architectures, and subsequently proposes further optimization methods.</p>
+
+<p>This article first briefly introduces the basic principles of directory coherence protocols used in homogeneous multi-core architectures with distributed storage. It then elaborates on existing schemes that optimize directory structures into sparse directories and presents novel optimization results. Finally, it analyzes the advantages, disadvantages, and feasibility of each scheme.</p>
+
+<h2 id="2-directory-coherence-protocols-in-distributed-storage">2. Directory Coherence Protocols in Distributed Storage</h2>
+
+<p>The directory coherence protocol is an improvement over the snooping protocol, introducing a “directory” data structure that significantly enhances system scalability. The directory stores relevant information for each data block, making access operations more efficient and avoiding the performance limitations caused by the broadcast mechanism in snooping protocols. When using a classic directory coherence protocol in a distributed shared memory system, each data block has a dedicated entry in the directory. Based on this characteristic, we refer to this as a “Full Directory” for the sake of subsequent discussion.</p>
+
+<p>Let us briefly analyze the overhead of a full directory. In this scheme, every node maintains complete directory information. Assuming each node’s memory contains $M$ blocks and there are $N$ nodes in total, each full directory must record $M \times N$ directory entries. Consequently, the directory space overhead for the entire system reaches the order of $O(M \times N \times N)$. Due to the large number of processors, the storage overhead for the directory entries themselves is substantial. As the number of nodes $N$ increases, the space overhead grows quadratically, resulting in poor system scalability. Therefore, we consider reducing the number of directory entries in each node to mitigate the costs of a full directory. This leads to the introduction of the sparse directory as an improved solution.</p>
+
+<h2 id="3-sparse-directory">3. Sparse Directory</h2>
+
+<h3 id="31-sparse-directory">3.1 Sparse Directory</h3>
+
+<p>The definition of a sparse directory was first proposed in 1992. It differs from a full directory in the way entries are allocated. A sparse directory allocates a directory entry only for cache blocks present in the Last Level Cache (LLC), recording the state information of the corresponding cache block. Since only a small fraction of blocks are loaded into various private caches at any given time, the vast majority of directory entries in a full directory are not accessed in the short term. Particularly as the core count increases and storage space expands, the proportion of these unused entries grows. Therefore, the storage overhead for these entries should be reduced. A sparse directory maintains consistency information only for data cached in private caches. Each directory entry includes a tag (indexing the cache block address), a state bit (recording the coherence state), and a sharing list (recording the distribution of data copies across processor cores) [1].</p>
+
+<p>Sparse directories are characterized by low associativity and large directory capacity. The purpose of low associativity is to reduce power consumption during directory lookups, but this increases the probability of set conflicts and the frequency of directory entry replacements. Directory replacements, in turn, cause the corresponding cache blocks to become invalid, forcing all nodes sharing that cache block to perform replacements. This increases access latency and causes data thrashing, thereby degrading system performance. To minimize directory conflict frequency and avoid performance loss, an over-provisioned directory capacity is adopted, reducing intra-set access conflicts by increasing the number of directory sets.</p>
+
+<h3 id="32-cuckoo-directory-and-implementation">3.2 Cuckoo Directory and Implementation</h3>
+
+<p>Ferdman et al. proposed using the Cuckoo directory to reduce the conflict replacements faced by sparse directories, aiming to solve the forced invalidation and cache thrashing issues caused by set conflicts in traditional schemes. This scheme retains the advantage of reduced storage overhead found in sparse directories while maintaining the stability of each node’s cache to a great extent, making it a relatively ideal sparse directory solution.</p>
+
+<p>The implementation of the Cuckoo directory is based on Cuckoo Hashing. The simplest sparse directory uses set associativity to reduce directory entries, which is essentially a form of hashing; therefore, improving sparse directories using hash tables is feasible. Cuckoo Hashing, also known as chained hashing, utilizes two or more parallel hash tables to reduce overhead when hash conflicts occur. Since the primary problem facing sparse directories after overhead reduction is conflict within set-associative directories, using chained hashing to mitigate conflicts is superior. In specific implementations, a 4-way Cuckoo directory structure can be adopted, using different hash functions for each way. When a new block becomes private storage and needs to be added to the directory, an insertion operation is triggered as follows:</p>
+
+<ol>
+  <li>Calculate the results of the hash functions for each way.</li>
+  <li>If a mapped position is empty, insert the entry there (if multiple ways have empty positions, one can be chosen arbitrarily).</li>
+  <li>If none of the mapped positions are empty, select a way (starting from the first) to insert the new entry and evict the existing directory entry.</li>
+  <li>Recalculate the hash function results for the evicted directory entry. If a mapped position is empty, execute step 2; otherwise, execute step 3.</li>
+  <li>If the loop of steps 3 and 4 continues without resolving, stop re-mapping after a certain number of attempts and force the eviction of the entry. Since this effectively invalidates a block in the Cache, it has a certain negative impact on operational efficiency.</li>
+</ol>
+
+<p><img src="/assets/images/cache/cuckoo-hash-structure.jpg" alt="4-way Cuckoo Hash Structure" class="mx-auto d-block" /></p>
+
+<p>When querying directory content, one simply maps the block index to be queried using the four-way hash and matches the index at the corresponding positions to determine a hit. Clearly, the time complexity for querying is $O(1)$. although the insertion time depends on the number of replacement cycles, amortized analysis shows that the amortized time for insertion is also $O(1)$ [2]. Thus, the Cuckoo directory possesses high time efficiency.</p>
+
+<p>There are several reasons for adopting Cuckoo hashing here rather than a standard hash table. Firstly, while linear probing is the fastest method for resolving conflicts in general hash tables (proven to be 16%-23% faster than Cuckoo hashing [3]), the amortized cost of operations in Cuckoo hashing is $O(1)$, meaning it is not significantly slower in terms of rapid response. Secondly, linear probing tends to cause directory entries to cluster in certain areas, leading to hotspot issues. In contrast, the four-way structure of Cuckoo hashing distributes entries more uniformly across different ways, making it a data structure better suited for computer architecture design.</p>
+
+<p>Therefore, the selection of hash functions largely determines the efficiency of the final implementation. The four hash functions must ensure excellent scattering properties so that mapping results are uniform. Simultaneously, due to the principle of locality, block addresses queried by a node within a period are relatively continuous. The hashing results should map continuous addresses to entries that are far apart within the same way; this is necessary to avoid hotspot issues.</p>
+
+<p>It is also necessary to minimize the number of loops during replacement cycles; thus, the mapping results of the four-way hash should be distinct. Assuming an address space from 0 to N and N/10 directory entries per way, we analyzed and designed a function mapping method. Figure 2 illustrates the mapping result of this design for the 0-N/10 address space. Based on the principle of locality and the ratio of private cache to total storage, block numbers recorded in the directory at any given moment are generally concentrated within a relatively continuous area of size N/10. In this scenario, a mapping method with a slope of 1 uses different offsets to ensuring that each block has four scattered, distinct hash results. This utilizes scattered directory entries as much as possible at any moment, maximizing the reduction of hotspot issues.</p>
+
+<p><img src="/assets/images/cache/hash-function-design.jpg" alt="Hash Function Design" class="mx-auto d-block" /></p>
+
+<h3 id="33-stash-directory">3.3 Stash Directory</h3>
+
+<p>The Cuckoo directory successfully reduces conflicts and hotspots using multiple distinct hash functions. However, when insertion reaches a forced termination state, the final block is kicked out. Essentially, this fails to leverage the principle of locality and thus cannot completely avoid data thrashing. Consequently, Demetriades et al. proposed the Stash directory [4].</p>
+
+<p>Consider a Cache block in an exclusive state; read and write operations on this block do not need to be restricted until another node requests it. The Stash directory exploits this characteristic by categorizing cached blocks into two distinct states: “Exclusive” and “Shared,” adding a 1-bit flag in the directory to distinguish them. Typically, we use 0 for “Exclusive” and 1 for “Shared.” From a hardware perspective, since any new directory entry added is initially in an exclusive state and the memory’s initial state is generally 0, this bit can be recorded without extra operations, making the 0-1 correspondence logical.</p>
+
+<p>Consider the case where a directory entry is replaced. If the flag indicates the block is in an “Exclusive” state, the block is not actually evicted from the Cache. This is because the node holding it exclusively will not cause consistency issues regardless of how it reads or writes, until another node requests that block. When another node calls for this block, since the record for it no longer exists in the directory, the system might erroneously conclude that the block is not in any node’s private cache. This is known as a False Miss.</p>
+
+<p>To avoid False Misses, a flag bit must be added to each Cache block in the shared LLC to indicate whether the corresponding Cache block has been cached by a lower-level Cache. This provides a new method to further determine the true state of each block.</p>
+
+<p><img src="/assets/images/cache/llc-false-miss-tag.jpg" alt="Shared LLC with False Miss Tag" class="mx-auto d-block" /></p>
+
+<p>The Stash directory utilizes the shared LLC and coherence protocols to detect issues like False Misses. The shared LLC reserves a False Miss Tag bit for each cache block to indicate if the block might be “cached” at a lower level of the hierarchy. Whenever a directory entry is evicted without requiring the corresponding block in the Cache to be evicted (i.e., invalidated), this bit is set by a notification message sent from the directory. Therefore, following a miss in the directory, a hit in the LLC where the False Miss Tag is set will immediately identify this as an erroneous miss. Upon detecting a false miss, the LLC controller refuses to satisfy the miss and instead invokes the coherence protocol to issue a broadcast request to locate and use the latest copy of the block. Once the miss is resolved, the coherence protocol registers the block in the directory and resets the corresponding cache bit in the LLC. From this analysis, it is evident that the coherence protocol for the Stash directory undergoes significant changes compared to general protocols and requires specific adjustments during implementation.</p>
+
+<p>As seen from the above, the Stash directory requires a shared LLC, which is common in modern Chip Multi-Processors (CMP). The LLC also requires extra bits to store the False Miss Tag. This additional storage is very small (&lt;0.2% of cache size) and is independent of the number of cores; increasing the core count does not increase the extra storage for False Miss Tags. Conversely, the percentage of extra storage decreases as address length increases. It is also important to note that there must be an inclusion property between the blocks hidden by the directory and the corresponding LLC entries. Fully inclusive LLC designs are common in general multi-core system architectures, so this condition is easily met.</p>
+
+<p><img src="/assets/images/cache/llc-cache-relationship.jpg" alt="Relationship between Shared LLC and Lower Level Cache Blocks" class="mx-auto d-block" /></p>
+
+<p>When an LLC block with the “cached” bit set is evicted, copies must be removed from the exclusive Cache hierarchy. Assuming an LLC entry with the cached bit set has no directory information, a background invalidation operation must be broadcast upon eviction. To avoid this, the cache system must implement clean eviction notifications (common in current commercial processors, such as AMD Opteron [5]). Therefore, when a block is evicted from the exclusive Cache hierarchy, a notification is sent to the directory, and the shared LLC is updated to better reflect the block’s sharing state.</p>
+
+<p>If the notification finds no corresponding entry in the directory, it implies the block being evicted is a hidden exclusive block currently tracked by the LLC. Thus, the eviction notification is forwarded to the LLC, which clears the cached state bit. Clearing eviction notifications may clear the cached state of LLC blocks before they are evicted, thereby reducing unnecessary broadcasts. Furthermore, allowing the LLC to prioritize replacing entries that have received eviction notifications can delay the eviction of cached LLC blocks. Further techniques to eliminate inclusion side effects can be found in previous studies [6] and are not the focus here.</p>
+
+<p>As a conventional sparse directory, the Stash directory handles the eviction of entries tracking shared data blocks by forcing the invalidation of all cached copies. Although this may result in the simultaneous invalidation of blocks across multiple cores, it is preferable. This is because hiding shared blocks (especially migrating ones) significantly increases the frequency of false misses compared to private blocks.</p>
+
+<p>Additionally, since the directory is sensitive to the temporal locality of actively shared blocks, victim shared entries (LRU) are likely tracking dead or temporarily exclusive shared blocks, thus benefiting from eviction. In the latter case, eviction gives the shared block a chance to reload as “Exclusive,” and if it remains exclusive, it can re-enter the storage directory. The Stash directory leverages the temporal behavior of actively shared blocks while reducing the pollution of the directory set by truly exclusive items.</p>
+
+<h2 id="4-feasibility-analysis">4. Feasibility Analysis</h2>
+
+<h3 id="41-theoretical-feasibility">4.1 Theoretical Feasibility</h3>
+
+<p>Regarding the implementation of directory coherence protocols under the Full Directory, Traditional Set-Associative Sparse Directory, Cuckoo Directory, and Stash Directory structures described above, a comparison is made regarding space overhead, hotspot issues, and hardware implementation to establish theoretical feasibility.</p>
+
+<style>
+.three-line-table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  width: 100%;
+}
+.three-line-table thead {
+  border-top: 2px solid #000;
+  border-bottom: 1.5px solid #000;
+}
+.three-line-table tbody {
+  border-bottom: 2px solid #000;
+}
+.three-line-table th,
+.three-line-table td {
+  padding: 8px 12px;
+  text-align: center;
+  border: none;
+}
+.three-line-table th {
+  font-weight: bold;
+}
+</style>
+
+<table class="three-line-table">
+  <thead>
+    <tr>
+      <th>Directory Type</th>
+      <th>Space Overhead</th>
+      <th>Hotspot Issue</th>
+      <th>Hardware Complexity</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Full Directory</td>
+      <td>$O(M \times N^2)$</td>
+      <td>None</td>
+      <td>Simple</td>
+    </tr>
+    <tr>
+      <td>Traditional Sparse Directory</td>
+      <td>$O(M)$</td>
+      <td>Severe</td>
+      <td>Medium</td>
+    </tr>
+    <tr>
+      <td>Cuckoo Directory</td>
+      <td>$O(M)$</td>
+      <td>Moderate</td>
+      <td>Relatively Complex</td>
+    </tr>
+    <tr>
+      <td>Stash Directory</td>
+      <td>$O(M)$</td>
+      <td>Minimal</td>
+      <td>Complex</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="42-experimental-feasibility">4.2 Experimental Feasibility</h3>
+
+<p>The time cost of using hardware circuit connections for simulation experiments is immense; therefore, simple software simulations should be conducted first. gem5 is a computer system architecture simulation platform running on Linux. We configured the gem5 experimental environment on Ubuntu and conducted simple experiments according to the official documentation [7]. gem5 provides two different Cache implementation methods, one of which, the Ruby simulator, allows us to custom configure directory structures, directory implementations, message passing, and coherence protocol details. We simulated a dual-CPU system with distributed storage architecture on gem5, where each CPU includes an L1 Cache, using the MSI directory coherence protocol for simple simulation. The platform can output a series of simulation results, such as total clock cycles based on the execution content. By running test programs with different characteristics and recording data such as total clock cycles and miss rates, we can compare mean values and standard deviations. Based on this more realistic data, we can perform a more complete feasibility verification of the aforementioned schemes.</p>
+
+<p><img src="/assets/images/cache/simulation-results.png" alt="Simulation results including total clock cycles" class="mx-auto d-block" /></p>
+
+<h2 id="5-summary">5. Summary</h2>
+
+<p>Addressing the defect of large storage space overhead in traditional directories, we introduced the sparse directory for optimization. Among the various specific types of sparse directories, we first noted the Cuckoo directory, which utilizes hash tables; our research focused primarily on the four-way Cuckoo directory structure. Analysis indicates that under this structure, the time complexity of various operations is low, resulting in high time efficiency. Additionally, the efficiency of the Cuckoo directory depends on the selection of specific hash functions. Considering the principle of program locality and the issue of loop replacement, mapping results in the most scattered scenarios can effectively avoid hotspot issues, thereby achieving optimal performance. Subsequently, we researched the Stash directory, which holds even greater potential. The Stash directory classifies Cache block states into exclusive and shared categories, requiring an additional 1-bit flag in the directory for implementation. When directory replacement occurs, the flag bit determines if an operation is necessary, further improving performance. Finally, future research can further verify the practical effects of these schemes through simulation.</p>
+
+<p>From this research, it can be observed that optimizations for computer system structures often adopt methods such as parallelism, scattering, and tagging. These methods either directly or indirectly establish multi-level relationships to achieve buffering, or expand the same level to obtain better parallel operation efficiency. Scattering and similar methods essentially aim to improve the efficiency of parallel processing. These three points can be utilized not only in the optimization of directory coherence protocols but also referenced in the optimization of other processes, achieving broad application.</p>
+
+<h2 id="references">References</h2>
+
+<p>[1] Srivatsa Akshay; Fasfous Nael; Anh Vu Doan Nguyen, et al. Exploring a Hybrid Voting-based Eviction Policy for Caches and Sparse Directories on Manycore Architectures[J]. 2021,87(Nov.):104384.1-104384.17</p>
+
+<p>[2] https://web.stanford.edu/class/archive/cs/cs166/cs166.1146/lectures/13/Small13.pdf</p>
+
+<p>[3] Friedhelm Meyer auf der Heide. Algorithms — ESA 2001[M]. Springer, Berlin, Heidelberg, 2001</p>
+
+<p>[4] Wu Jianguo, Chen Haiyan, Liu Sheng, Deng Rangyu, Chen Junjie. A Survey of Performance Improvement Methods for Multi-core Cache Sparse Directories[J]. Computer Engineering &amp; Science, 2019, 41(03):385-392.</p>
+
+<p>[5] P. Conway, N. Kalyanasundharam, G. Donley, K. Lepak, and B. Hughes. Cache hierarchy and memory subsystem of the amd opteron processor. IEEE Micro, 2010.</p>
+
+<p>[6] A. Jaleel, E. Borch, M. Bhandaru, S. C. Steely Jr., and J. Emer. Achieving non-inclusive cache performance with inclusive caches: Temporal locality aware (tla) cache management policies. MICRO, 2010.</p>
+
+<p>[7] https://www.gem5.org/documentation/learning_gem5/introduction/</p>]]></content><author><name>sam</name></author><category term="Theory" /><summary type="html"><![CDATA[In multi-core system architectures, cache coherence protocols are primarily classified into snooping protocols and directory protocols, with the latter generally being considered superior. In classic directory schemes, every data block has a corresponding directory entry, which results in significant storage overhead. Consequently, sparse directories can be employed to reduce costs by maintaining information only for data currently cached. The Cuckoo directory, which improves upon the sparse directory using hash tables, represents a robust solution. A potentially superior alternative is the Stash directory, which incorporates a flag bit in the directory to distinguish cache states, further minimizing performance loss. Both sparse directory schemes offer significant improvements over traditional directories. Based on theoretical analysis, their practical feasibility can be further verified through simulation.]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/cache/cover.avif" /><media:content medium="image" url="http://localhost:4000/assets/images/cache/cover.avif" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">多核体系下Cache目录一致性协议优化方案</title><link href="http://localhost:4000/Cache/" rel="alternate" type="text/html" title="多核体系下Cache目录一致性协议优化方案" /><published>2025-12-16T00:00:00+00:00</published><updated>2025-12-16T00:00:00+00:00</updated><id>http://localhost:4000/Cache</id><content type="html" xml:base="http://localhost:4000/Cache/"><![CDATA[<p>在多核系统结构下，Cache一致性协议有监听协议和目录协议两种，其中后者是更优的。在经典的目录中，每一个数据块都有对应的目录项，这使得存储的空间开销很大。故而可以使用稀疏目录，通过只维护被Cache缓存的数据对应的信息来减少开销。稀疏目录中的Cuckoo目录是一种较好的方案，它使用哈希表的方式对稀疏目录进行改进。一种潜力更好的目录是Stash目录，它在目录中增加了一个标记位来区分Cache的状态，进一步减小了性能损失。以上两种稀疏目录方案对传统目录的优化是明显的。基于理论分析，还可以通过仿真模拟验证其实际可行性。</p>
+
+<h2 id="1-引言">1. 引言</h2>
+
+<p>随着计算机系统的发展，多核和众核体系结构已经成为实现高性能和并行计算的重要手段。在多核体系结构中，Cache作为一个关键的组件，起到了提升数据访问速度和提高系统性能的作用。然而，多个核之间私有缓存的读写可能存在不一致问题，因此诞生了许多一致性协议来解决这一棘手难题，其中可扩展性较好的一种协议是目录一致性协议。但随着核心数量的增加和共享数据的增多，传统的基于目录的Cache一致性方案面临着目录的存储和访问开销过大的问题。本文基于分布式存储下的同构多核体系结构，分析了已有的稀疏目录方案及其对传统的基于目录Cache一致性方案的优化效果，并在此基础上提出进一步优化方法。</p>
+
+<p>本文首先简单介绍分布式存储下同构多核体系结构使用的目录一致性协议基本原理，然后阐述现有的对目录结构优化为稀疏目录的方案，并提出全新的优化结果，最后分析各方案的优缺点和可行性。</p>
+
+<h2 id="2-分布式存储下的目录一致性协议">2. 分布式存储下的目录一致性协议</h2>
+
+<p>目录一致性协议是对监听协议的改进方案，它引入的目录这一数据结构使得系统的扩放性更好。目录中存放的各数据块的相关信息使得访问操作的效率更高，且避免了监听协议中广播机制对系统性能的限制。在分布式共享存储器系统中使用经典的目录一致性协议时，每个数据块都在目录中有存放相关数据的一项，基于这点，我们将其称为完整目录以方便后续讨论。</p>
+
+<p>下面我们简单对完整目录的开销进行分析。这种目录中，每个节点都维护了一个完整的目录信息。设每个节点的存储器中有M个块，一共有N个节点，则每个完整目录中需要记录$M \times N$个目录项，整个系统在目录的空间开销上就达到了$O(M \times N \times N)$数量级。由于处理器数量较多，目录项本身的存储开销是很大的，当节点数量N增多时，空间开销将以平方数量级增长，系统的扩放性很差。同时，因此我们可以考虑减少每个节点中目录的条数来缩减完整目录的开销。于是我们引入了稀疏目录作为改进方案。</p>
+
+<h2 id="3-稀疏目录">3. 稀疏目录</h2>
+
+<h3 id="31-稀疏目录">3.1 稀疏目录</h3>
+
+<p>稀疏目录定义最早在1992年提出，它与完全目录的区别是：目录项分配方式不同。前者为所有的末级缓存LLC（Last Level Cache）的Cache块分配的一个目录项，记录对应Cache块状态信息。由于某一时间点只有一小部分块被调入各Cache成为私有缓存，大部分目录短期内不会被访问，尤其当核数增多、存储空间增大时这些目录占比会越来越大，因此应当减少这些目录的存储开销。稀疏目录只维护被私有Cache缓存的数据所对应的一致性信息，每个目录项包括tag位（索引Cache块地址）、状态位（记录对应Cache块一致性状态）、共享列表（记录数据副本在各处理器核分布情况）[1]。</p>
+
+<p>稀疏目录具有低相连度和大目录容量的特点。相连度较低的目的是减小目录查找功耗，但会增加组冲突概率、增加目录项替换次数。目录替换又会导致对应Cache块无效，导致共享这一Cache块的节点都需要进行替换，增加访问延迟，造成数据抖动，从而降低系统性能。为减小目录冲突频率和避免性能损失，采用过量供应的目录容量，通过增加目录组数减小组内访问冲突。</p>
+
+<h3 id="32-cuckoo目录及其实现">3.2 Cuckoo目录及其实现</h3>
+
+<p>Ferdman等人提出用Cuckoo目录来减少稀疏目录面临的冲突替换，用以解决传统方案中组冲突带来的强制无效和Cache抖动问题。这种方案既保留了稀疏目录减小存储开销的优势，又很大限度的保持各节点Cache的稳定，是一种相对理想的稀疏目录方案。</p>
+
+<p>Cuckoo目录的实现基于Cuckoo Hashing。最简单的稀疏目录采用组相联的方式来减少目录项，其本质是一种散列，因此使用哈希表的方式改进稀疏目录是可行的。Cuckoo Hashing又名链式哈希，它拥有并行的两个以上的哈希表，来减小发生哈希冲突时的开销。由于稀疏目录在减少开销以后面临的主要问题是组相联目录中的冲突问题，因此用链式哈希来减小冲突是更优的。具体实现时，可以采用四路Cuckoo目录结构，对每一路使用不同的哈希函数进行散列。当有新的块变为私有存储需要添加到目录中时，会产生插入操作，操作如下：</p>
+
+<ol>
+  <li>计算各路哈希函数结果。</li>
+  <li>如果映射的位置是空的，则插入到该位置（有多个路有空位置时可以任选一个插入）。</li>
+  <li>如果映射的位置都不空，则从第一路开始选择有空位置的路插入，将原来的目录项移出。</li>
+  <li>重新计算被移出的目录项的各路哈希函数结果，如果映射的位置是空的，则执行②，否则执行③。</li>
+  <li>如果重复进行③④的操作而无法跳出循环，在达到一定次数后不再重新映射，直接强制踢出该目录项，由于这样也相当于作废了Cache中的一个块，对运行效率是有一定负面影响的。</li>
+</ol>
+
+<p><img src="/assets/images/cache/cuckoo-hash-structure.jpg" alt="四路Cuckoo哈希结构" class="mx-auto d-block" /></p>
+
+<p>查询目录内容时，只需将待查询的块索引进行四路哈希映射，再到对应位置匹配索引即可获知是否命中。显然，查询的时间复杂度为$O(1)$，但插入的操作时间取决于循环替换的次数，用摊还时间分析得到插入的摊还时间也是$O(1)$[2]，Cuckoo目录具有较好的时间效率。</p>
+
+<p>在此采用Cuckoo哈希而不是普通的哈希表有许多原因。其一，如果采用一般的哈希表，解决冲突时最快的方法是线性探测，实践证明线性探测比Cuckoo哈希快16%-23%[3]，但由于Cuckoo哈希的各操作摊还代价都是$O(1)$，所以在快速响应上并不比线性探测慢。其二，线性探测容易导致目录项集中在某个区域，容易产生热点问题，Cuckoo哈希的四路结构则更普遍地将各目录项均匀分布并分布在不同路上，是更适合应用在计算机系统结构设计上的哈希数据结构。</p>
+
+<p>所以，哈希函数的选取很大程度上决定了最终实现的效率，四个哈希函数的选取必须保证有很好的散列性质，映射的结果要均匀。同时，由于局部性原理，节点在一段时间内查询的块地址是比较连续的，散列的结果应该能够将连续地址映射同一路中相隔较远的项上，这样才能避免热点问题。</p>
+
+<p>还需要考虑循环替换时应当尽可能地减少循环次数，因此四路哈希的映射结果最好具有一定的区别。设地址空间从0到N，每路目录项为N/10，经过我们的分析，设计了一种函数映射方式，图2是该设计对0-N/10地址空间的映射结果示例。根据局部性原理和私有缓存占总存储的比例，某一时刻在目录中记录的块号一般集中在N/10大小的较连续区域内，此时斜率为1的映射方式用不同的偏移量使得每个块都有四个分散的不同哈希结果，在任意时刻都尽可能地使用了更分散的目录项，最大化减少热点问题。</p>
+
+<p><img src="/assets/images/cache/hash-function-design.jpg" alt="哈希函数的设计" class="mx-auto d-block" /></p>
+
+<h3 id="33-stash目录">3.3 Stash目录</h3>
+
+<p>Cuckoo目录用多个不同的哈希函数成功减少了冲突和热点问题，但插入到强制结束状态时会踢出最后一块，这本质上是没有利用局部性原理的，所以并不能完全避免数据抖动，因此Demetriades等人提出了Stash目录[4]。</p>
+
+<p>考察一个处于独占状态的Cache块，在其它节点需要调用它前，对该块进行读写操作是不需要受到限制的。Stash目录利用了这一特性，将被缓存的Cache块分为”独占”和”共享”两种不同的状态，并在目录中增加1位标记来进行区分。一般情况下，我们用0表示”独占”，1表示”共享”。从硬件层面考虑，因为每当有新的目录项加入时，一定是独占状态，存储器的初始状态一般是0，因此不需要额外操作就可以记录好这一位，这样的0-1对应是合理的。</p>
+
+<p>考虑目录某一项发生替换的情况，如果此时根据标记判断出该块是”独占”状态，就不把这一块从Cache中真正踢出，因为独占它的节点无论如何读写它都不会产生一致性问题，直到有别的节点要调用这一块。当别的节点调用这一块时，由于目录中对该块的记录已经不存在，所以会误认为该块没有在任何节点的私有缓存中，这被称为假缺失（False Miss）。</p>
+
+<p>为了避免假缺失，需要在共享LLC中为每个Cache块增加1位标记位来表明相应Cache块是否已被更低级Cache缓存，这样我们就有了新的方法来进一步确定每个块的真实状态。</p>
+
+<p><img src="/assets/images/cache/llc-false-miss-tag.jpg" alt="共享LLC添加假缺失Tag" class="mx-auto d-block" /></p>
+
+<p>Stash目录利用共享LLC和一致性协议检测假缺失等问题。共享LLC中已经为每个缓存块保留了一个假缺失Tag位，来指示该块是否可能在层次结构的较低级别中”缓存”。每当目录项被踢出而不需要使Cache中相应块也被踢出（即无效）时，该位由目录发送的通知消息设置。因此，目录中的未命中之后，LLC中设置了假缺失Tag位的命中将立即判断出这是错误的未命中。检测到错误的未命中时，LLC控制器将拒绝满足未命中，而是调用一致性协议发出广播请求，以把块的最新副本找出使用。未命中完成后，一致性协议将在目录中注册块，并重置LLC中相应的缓存位。由此分析可知，Stash目录的一致性协议与一般的协议有较大的变化，实现时需要单独做出调整。</p>
+
+<p>从上述内容可以看出，Stash目录需要共享LLC，这在现代CMP中是常见的。LLC中还需要额外的位来存储假缺失Tag，这份额外存储非常小（&lt;缓存大小的0.2%），而且与内核数量无关，无论核数增长多少也不会导致假缺失Tag的额外存储增加，反而会因为地址长度增加而减少额外存储的占比。显然还需要注意，被目录隐藏的块和相应的LLC条目之间必须是包含属性，完全包含的LLC设计也是一般常见的多核系统架构，所以这一条件很容易被满足。</p>
+
+<p><img src="/assets/images/cache/llc-cache-relationship.jpg" alt="共享LLC与下一级Cache中缓存块地址的关系" class="mx-auto d-block" /></p>
+
+<p>当具有”缓存”位集的LLC块被逐出时，必须从独占Cache层次结构中删除副本。假定具有缓存位集的LLC条目没有目录信息，则必须广播逐出的后台无效操作。为了避免这种情况，缓存系统必须实现干净的逐出通知（在当前的商业处理器中很常见，例如AMD Opteron[5]）。因此，当从独占Cache层次结构逐出块时，发送通知到目录并更新共享LLC，以更好地反映块的共享状态。</p>
+
+<p>如果通知在目录中找不到相应的条目，则意味着要逐出的块是隐藏的独占块，并且当前由LLC跟踪。因此，逐出通知将转发给LLC，并且它将清除缓存状态位。清除逐出通知可能会在LLC块被逐出之前清除它们的缓存状态，从而减少不必要的广播。此外，允许LLC首先替换接收到逐出通知的条目，可以延迟缓存的LLC块被逐出。消除包容性副作用的进一步技术可在先前的研究中找到[6]，此处不是研究重点就不再详述。</p>
+
+<p>作为一个常规的稀疏目录，Stash目录处理跟踪共享数据块的条目的逐出，它强制所有缓存副本失效。尽管这可能会导致多个核心中的块同时失效，但这是优选的，因为与私有块相比，隐藏共享块（特别是迁移）可能会显著增加错误命中的频率。</p>
+
+<p>此外，由于目录对主动共享的块的时间位置敏感，受害共享条目（LRU）很可能跟踪死的或暂时独占的共享块，因此从逐出中受益。在后一种情况下，逐出将使共享块有机会重新加载为”独占”，并且如果要保持独占，则可以重新进入存储目录。Stash目录利用了主动共享块的时间行为，同时减少了真正独占项对目录集的污染。</p>
+
+<h2 id="4-可行性分析">4. 可行性分析</h2>
+
+<h3 id="41-理论可行性">4.1 理论可行性</h3>
+
+<p>针对以上阐述的完整目录、传统组相联稀疏目录、Cuckoo目录和Stash目录结构下的目录一致性协议实现，从空间开销、热点问题、硬件实现等方面做出比较，并得到理论上的可行性。</p>
+
+<style>
+.three-line-table {
+  border-collapse: collapse;
+  margin: 20px 0;
+  width: 100%;
+}
+.three-line-table thead {
+  border-top: 2px solid #000;
+  border-bottom: 1.5px solid #000;
+}
+.three-line-table tbody {
+  border-bottom: 2px solid #000;
+}
+.three-line-table th,
+.three-line-table td {
+  padding: 8px 12px;
+  text-align: center;
+  border: none;
+}
+.three-line-table th {
+  font-weight: bold;
+}
+</style>
+
+<table class="three-line-table">
+  <thead>
+    <tr>
+      <th>目录类型</th>
+      <th>空间开销</th>
+      <th>热点问题</th>
+      <th>硬件实现复杂度</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>完整目录</td>
+      <td>$O(M \times N^2)$</td>
+      <td>无</td>
+      <td>简单</td>
+    </tr>
+    <tr>
+      <td>传统稀疏目录</td>
+      <td>$O(M)$</td>
+      <td>严重</td>
+      <td>中等</td>
+    </tr>
+    <tr>
+      <td>Cuckoo目录</td>
+      <td>$O(M)$</td>
+      <td>较轻</td>
+      <td>较复杂</td>
+    </tr>
+    <tr>
+      <td>Stash目录</td>
+      <td>$O(M)$</td>
+      <td>最轻</td>
+      <td>复杂</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="42-实验可行性">4.2 实验可行性</h3>
+
+<p>使用硬件电路连接来进行模拟实验的时间成本是巨大的，应当先对以上方案进行简单的仿真模拟。gem5是在Linux系统上运行的一个计算机系统结构仿真实验平台，我们在Ubuntu上配置了gem5的实验环境，并根据官方文档进行了简单的实验[7]。gem5提供了两种不同的Cache实现方式，其中一种Ruby模拟器可以让我们自行设置目录结构、目录实现、消息传递以及一致性协议的不同细节。我们在gem5上进行了一个分布式存储体系的双CPU系统，每个CPU包含L1 Cache，使用MSI目录一致性协议进行简单的模拟，平台可以给出基于运行内容的总时钟周期等一系列模拟结果。我们可以通过运行不同特点的测试程序并记录它们的总时钟周期数、不命中率等数据，用平均值与标准差进行比较。基于这些更为真实的数据，我们可以对上述方案进行更加完备的可行性验证。</p>
+
+<p><img src="/assets/images/cache/simulation-results.png" alt="包含时钟周期总数的模拟结果" class="mx-auto d-block" /></p>
+
+<h2 id="5-总结">5. 总结</h2>
+
+<p>基于传统目录存储空间开销大的缺陷，我们引入了稀疏目录对其进行优化。在稀疏目录的多种具体类型中，我们首先注意到Cuckoo目录，它采用的是哈希表，我们主要对四路Cuckoo目录结构进行了研究。分析得出，此种结构下各操作时间复杂度都较低，其时间效率较高。另外，Cuckoo目录的效率还取决于具体哈希函数的选取。考虑到程序的局部性原理和循环替换的问题，映射的结果在最分散的情况下可以较好的避免热点问题，从而获得最佳的性能。随后，我们又对潜力更好的Stash目录进行研究。Stash目录将Cache块的状态分为独占与共享两类，这需要在目录中增加1位标记位来实现。在目录发生替换时，可以通过标记位来判断是否需要进行操作，这进一步提高了性能。最后，在今后的研究中可以通过仿真模拟对这些方案的实际效果进行进一步验证。</p>
+
+<p>从研究中可以发现，对计算机系统结构的优化往往是采用并行、分散、标记等方式，它们要么直接或间接地建立了多级关系来达到缓冲这一目标，要么把同一级展开获得更好地并行操作提高效率，而分散等方式本质上还是在提高并行处理的效率。不仅在目录一致性协议的优化中可以使用这三点，在其它过程的优化中也可以参考这些常用而非常有效的方法，达到举一反三的效果。</p>
+
+<h2 id="参考文献">参考文献</h2>
+
+<p>[1] Srivatsa Akshay; Fasfous Nael; Anh Vu Doan Nguyen, et al. Exploring a Hybrid Voting-based Eviction Policy for Caches and Sparse Directories on Manycore Architectures[J]. 2021,87(Nov.):104384.1-104384.17</p>
+
+<p>[2] https://web.stanford.edu/class/archive/cs/cs166/cs166.1146/lectures/13/Small13.pdf</p>
+
+<p>[3] Friedhelm Meyer auf der Heide. Algorithms — ESA 2001[M]. Springer, Berlin, Heidelberg, 2001</p>
+
+<p>[4] 吴健虢,陈海燕,刘胜,邓让钰,陈俊杰.多核Cache稀疏目录性能提升方法综述[J].计算机工程与科学,2019,41(03):385-392.</p>
+
+<p>[5] P. Conway, N. Kalyanasundharam, G. Donley, K. Lepak, and B. Hughes. Cache hierarchy and memory subsystem of the amd opteron processor. IEEE Micro, 2010.</p>
+
+<p>[6] A. Jaleel, E. Borch, M. Bhandaru, S. C. Steely Jr., and J. Emer. Achieving non-inclusive cache performance with inclusive caches: Temporal locality aware (tla) cache management policies. MICRO, 2010.</p>
+
+<p>[7] https://www.gem5.org/documentation/learning_gem5/introduction/</p>]]></content><author><name>sam</name></author><category term="理论" /><summary type="html"><![CDATA[在多核系统结构下，Cache一致性协议有监听协议和目录协议两种，其中后者是更优的。在经典的目录中，每一个数据块都有对应的目录项，这使得存储的空间开销很大。故而可以使用稀疏目录，通过只维护被Cache缓存的数据对应的信息来减少开销。稀疏目录中的Cuckoo目录是一种较好的方案，它使用哈希表的方式对稀疏目录进行改进。一种潜力更好的目录是Stash目录，它在目录中增加了一个标记位来区分Cache的状态，进一步减小了性能损失。以上两种稀疏目录方案对传统目录的优化是明显的。基于理论分析，还可以通过仿真模拟验证其实际可行性。]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/cache/cover.avif" /><media:content medium="image" url="http://localhost:4000/assets/images/cache/cover.avif" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold</title><link href="http://localhost:4000/LeetCode1219-en/" rel="alternate" type="text/html" title="A New Perspective on Time Complexity for LeetCode 1219: Path with Maximum Gold" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/LeetCode1219-en</id><content type="html" xml:base="http://localhost:4000/LeetCode1219-en/"><![CDATA[<h2 id="algorithm-approach">Algorithm Approach</h2>
 
 <p>A 2D vector is used to store the distribution of the gold mines. The algorithm first traverses the entire grid. Any coordinate with a non-zero value is treated as a starting point. We employ DFS (Depth-First Search) with backtracking to search the entire graph. During the search process, visited coordinates are marked (by setting the gold amount to 0), while tracking the currently accumulated gold.</p>
 
