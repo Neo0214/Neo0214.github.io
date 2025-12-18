@@ -6,7 +6,7 @@ categories: [ Algorithm ]
 image: assets/images/elevator/cover.jpg
 math: true
 featured: false
-hidden: true
+hidden: false
 ---
 
 ## Development Environment
