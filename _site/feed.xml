@@ -1,4 +1,1253 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-12-18T15:49:43+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Hyrule Royal Warehouse</title><subtitle>Mundana is a free Jekyll theme for awesome people like you, Medium like.</subtitle><entry><title type="html">Optimization Schemes for Cache Directory Coherence Protocols in Multi-Core Architectures</title><link href="http://localhost:4000/Cache-en/" rel="alternate" type="text/html" title="Optimization Schemes for Cache Directory Coherence Protocols in Multi-Core Architectures" /><published>2025-12-17T00:00:00+00:00</published><updated>2025-12-17T00:00:00+00:00</updated><id>http://localhost:4000/Cache-en</id><content type="html" xml:base="http://localhost:4000/Cache-en/"><![CDATA[<p>In multi-core system architectures, cache coherence protocols are primarily classified into snooping protocols and directory protocols, with the latter generally being considered superior. In classic directory schemes, every data block has a corresponding directory entry, which results in significant storage overhead. Consequently, sparse directories can be employed to reduce costs by maintaining information only for data currently cached. The Cuckoo directory, which improves upon the sparse directory using hash tables, represents a robust solution. A potentially superior alternative is the Stash directory, which incorporates a flag bit in the directory to distinguish cache states, further minimizing performance loss. Both sparse directory schemes offer significant improvements over traditional directories. Based on theoretical analysis, their practical feasibility can be further verified through simulation.</p>
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-12-28T14:13:49+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Hyrule Royal Warehouse</title><subtitle>Mundana is a free Jekyll theme for awesome people like you, Medium like.</subtitle><entry><title type="html">File Management Simulation - TJU Operating Systems Course Project</title><link href="http://localhost:4000/FileManage-en/" rel="alternate" type="text/html" title="File Management Simulation - TJU Operating Systems Course Project" /><published>2025-12-27T00:00:00+00:00</published><updated>2025-12-27T00:00:00+00:00</updated><id>http://localhost:4000/FileManage-en</id><content type="html" xml:base="http://localhost:4000/FileManage-en/"><![CDATA[<h2 id="file-management-simulation-system-design-report">File Management Simulation System Design Report</h2>
+
+<h3 id="table-of-contents">Table of Contents</h3>
+
+<ul>
+  <li><a href="#file-management-simulation-system-design-report">File Management Simulation System Design Report</a>
+    <ul>
+      <li><a href="#table-of-contents">Table of Contents</a></li>
+      <li><a href="#development-environment">Development Environment</a></li>
+      <li><a href="#project-structure">Project Structure</a></li>
+      <li><a href="#user-interface">User Interface</a></li>
+      <li><a href="#operation-instructions">Operation Instructions</a></li>
+      <li><a href="#implemented-features">Implemented Features</a></li>
+      <li><a href="#system-analysis">System Analysis</a>
+        <ul>
+          <li><a href="#implemented-classes">Implemented Classes</a></li>
+          <li><a href="#explicit-linking-method">Explicit Linking Method</a></li>
+          <li><a href="#bitmap-and-fat-table">Bitmap and FAT Table</a></li>
+        </ul>
+      </li>
+      <li><a href="#system-implementation">System Implementation</a>
+        <ul>
+          <li><a href="#allocating-disk-space-for-file-content">Allocating Disk Space for File Content</a></li>
+          <li><a href="#retrieving-file-content">Retrieving File Content</a></li>
+          <li><a href="#deleting-file-content">Deleting File Content</a></li>
+          <li><a href="#updating-file-content">Updating File Content</a></li>
+          <li><a href="#checking-for-duplicate-filenames-in-the-same-directory">Checking for Duplicate Filenames in the Same Directory</a></li>
+          <li><a href="#saving-file-content">Saving File Content</a></li>
+          <li><a href="#creating-directory-tree">Creating Directory Tree</a></li>
+          <li><a href="#disk-file-read-and-write-operations">Disk File Read and Write Operations</a></li>
+          <li><a href="#directory-file-read-and-write-operations">Directory File Read and Write Operations</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="development-environment">Development Environment</h3>
+
+<ul>
+  <li>Development Environment: Windows 11</li>
+  <li>Development Software: PyCharm</li>
+  <li>Programming Language: Python 3.11</li>
+  <li>Main Imported Modules:
+    <ul>
+      <li>PyQt5</li>
+      <li>sys</li>
+      <li>os</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="project-structure">Project Structure</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FileManageSystem/
+    BitMapInfo.txt
+    Category.py
+    CategoryInfo.txt
+    FCB.py
+    main.py
+    MyDiskInfo.txt
+    project_structure.txt
+    VirtualDisk.py
+    Runtime Screenshot.png
+    docs/
+        File Management Simulation System Design Report.md
+    res/
+        cat.jpg
+        file.png
+        folder.jpg
+        icon.jpg
+</code></pre></div></div>
+
+<h3 id="user-interface">User Interface</h3>
+
+<p><img src="/assets/images/filemanage/interface.png" alt="Runtime Screenshot" class="mx-auto d-block" /></p>
+
+<h3 id="operation-instructions">Operation Instructions</h3>
+
+<ul>
+  <li>Click the buttons on the right side to create new files, folders, or format the disk;</li>
+  <li>Right-click on blank areas to create new files or folders;</li>
+  <li>Right-click on file or folder names to open or delete files and folders;</li>
+  <li>Click on file or folder names to open the file editor or navigate into folders;</li>
+  <li>When exiting the file editor, you can choose whether to save changes;</li>
+  <li>The upper right section of the interface allows you to enter a name, select a type, and search within the current directory;</li>
+  <li>Files and folders can be sorted by file type, filename, and modification date.</li>
+</ul>
+
+<h3 id="implemented-features">Implemented Features</h3>
+
+<ul>
+  <li>
+    <p>Display information about files and folders in the current directory;</p>
+  </li>
+  <li>Create and delete files and folders;</li>
+  <li>Open folders and edit files;</li>
+  <li>Format the disk;</li>
+  <li>Search for files and folders;</li>
+  <li>Tree-structured directory diagram;</li>
+  <li>Sort files and folders by filename, modification time, and file type;</li>
+  <li>Navigate to parent directory;</li>
+  <li>Display current path.</li>
+</ul>
+
+<h3 id="system-analysis">System Analysis</h3>
+
+<h4 id="implemented-classes">Implemented Classes</h4>
+
+<ul>
+  <li>
+    <p>FCB Class: File Control Block, records filename, file type, modification date, file size, and starting storage location on disk;</p>
+  </li>
+  <li>
+    <p>Node Class: Stores child nodes, records parent node, representing relationships between files;</p>
+  </li>
+  <li>
+    <p>Category Class: Stores directory information for the entire file system, with root recording the root node. Provides several methods:</p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">free_category(self, p_node)</code>: Releases the directory of a specified node;</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">search(self, p_node, file_name, file_type)</code>: Searches for files or folders under a specified node;</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">search_in_current_directory(self, p_node, file_name, file_type)</code>: Searches for files or folders only in the specified directory;</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">create_file(self, parent_node, fcb)</code>: Creates files or folders;</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">check_same_name(self, p_node, name, file_type)</code>: Checks if a file or folder with the same name exists in the same directory.</p>
+      </li>
+    </ul>
+  </li>
+  <li>VirtualDisk Class: Simulates disk operations, recording disk size, block size, number of blocks, remaining blocks, memory and bitmap. Provides several methods:
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">get_block_size(self, size)</code>: Returns the number of storage blocks required for a specified size;</li>
+      <li><code class="language-plaintext highlighter-rouge">give_space(self, fcb, content)</code>: Allocates space for storing content for a specific FCB, writes content to disk, and updates the bitmap;</li>
+      <li><code class="language-plaintext highlighter-rouge">get_file_content(self,fcb)</code>: Returns the content stored on disk for a specified FCB;</li>
+      <li><code class="language-plaintext highlighter-rouge">delete_file_content(self, start, size)</code>: Deletes content stored on disk at a specified starting position and size;</li>
+      <li><code class="language-plaintext highlighter-rouge">file_update(self,old_start,old_size,new_fcb,new_content)</code>: Updates file content.</li>
+    </ul>
+  </li>
+  <li>MainWindow Class: Main window, maintains primary program logic;</li>
+  <li>HelpDialog Class: Help window, displays when the file management system is first opened, providing operational guidance to users;</li>
+  <li>CreateDialog Class: New file and folder creation window, displays when creating new files and folders;</li>
+  <li>NoteForm Class: Text file editing interface, displays when editing text files;</li>
+</ul>
+
+<h4 id="explicit-linking-method">Explicit Linking Method</h4>
+
+<ul>
+  <li>In this file system, file storage space management uses the explicit linking method. File content is stored in different blocks on the disk. When creating a file, an appropriate number of free blocks are allocated. When writing to a file, content is written sequentially into corresponding blocks; when deleting a file, the previously occupied positions are simply marked as empty.</li>
+</ul>
+
+<h4 id="bitmap-and-fat-table">Bitmap and FAT Table</h4>
+
+<ul>
+  <li>Disk free space management is based on an enhanced bitmap design. The FAT table, which stores file location information on the disk, is combined with a traditional bitmap. Empty disk positions are marked with EMPTY = -1, blocks containing files store the position of the next block in the file, and blocks at the end of files are marked with END = -2.</li>
+</ul>
+
+<h3 id="system-implementation">System Implementation</h3>
+
+<h4 id="allocating-disk-space-for-file-content">Allocating Disk Space for File Content</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">give_space</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">fcb</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+            <span class="c1"># Special handling for newlines to ensure '\r\n' is not split
+</span>            <span class="k">if</span> <span class="n">content</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="sh">'</span><span class="se">\r\n</span><span class="sh">'</span> <span class="ow">and</span> <span class="n">self</span><span class="p">.</span><span class="n">block_size</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+                <span class="n">blocks</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="k">elif</span> <span class="n">index</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">block_size</span> <span class="o">&lt;=</span> <span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+                <span class="n">blocks</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">block_size</span><span class="p">])</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">block_size</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Add the last possible block smaller than block_size
+</span>                <span class="n">blocks</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">index</span><span class="p">:])</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">blocks</span><span class="p">:</span>  <span class="c1"># If blocks is empty (content is empty or other cases)
+</span>            <span class="k">return</span> <span class="bp">True</span>  
+
+        <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">remain</span><span class="p">:</span>
+            <span class="c1"># Find where to start storing the file
+</span>            <span class="n">start</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">block_num</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span><span class="p">:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">remain</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">fcb</span><span class="p">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="c1"># If no space found
+</span>                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="c1"># Start storing content from this position onward
+</span>            <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nf">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">block_num</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span><span class="p">:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">remain</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>  <span class="c1"># Store each piece of data using linking
+</span>                    <span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># Process next block
+</span>                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="nf">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">):</span>
+                <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">END</span>  <span class="c1"># Mark end of file
+</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<p>First, the content is split to ensure text is divided according to the given block size, while ensuring that <code class="language-plaintext highlighter-rouge">\r\n</code> newline characters are not split across different blocks. Then, the disk is traversed to find the first free storage block, its position is recorded in fcb.start, content is written into it, and the remaining block count is decremented. Next, content continues to be stored from this position onward. In the bitmap, block relationships are stored using linking - each position in the bitmap stores the position of the next block, with the end of file marked by self.END.</p>
+
+<h4 id="retrieving-file-content">Retrieving File Content</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">get_file_content</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">fcb</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fcb</span><span class="p">.</span><span class="n">start</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sh">""</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="sh">""</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">fcb</span><span class="p">.</span><span class="n">start</span>
+            <span class="n">blocks</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_block_size</span><span class="p">(</span><span class="n">fcb</span><span class="p">.</span><span class="n">size</span><span class="p">)</span>
+
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">i</span><span class="o">=</span><span class="n">start</span>
+            <span class="k">while</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">self</span><span class="p">.</span><span class="n">block_num</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">blocks</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">i</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">content</span>
+</code></pre></div></div>
+
+<p>Based on information stored in the bitmap, content from different storage blocks is concatenated together.</p>
+
+<h4 id="deleting-file-content">Deleting File Content</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">delete_file_content</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+       <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span> <span class="ow">or</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">block_num</span><span class="p">:</span>
+           <span class="k">return</span>  <span class="c1"># If start position is invalid or file is empty, return immediately
+</span>
+       <span class="n">blocks</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_block_size</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+       <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+       <span class="n">i</span> <span class="o">=</span> <span class="n">start</span>
+       <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">block_num</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">blocks</span><span class="p">:</span>
+           <span class="n">next_index</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># Get next index before clearing
+</span>           <span class="n">self</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sh">""</span>
+           <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span>
+           <span class="n">self</span><span class="p">.</span><span class="n">remain</span> <span class="o">+=</span> <span class="mi">1</span>
+
+           <span class="k">if</span> <span class="n">next_index</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">END</span><span class="p">:</span>
+               <span class="k">break</span>  <span class="c1"># If this was the last block, exit the loop
+</span>
+           <span class="n">i</span> <span class="o">=</span> <span class="n">next_index</span>
+           <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h4 id="updating-file-content">Updating File Content</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">file_update</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">old_start</span><span class="p">,</span><span class="n">old_size</span><span class="p">,</span><span class="n">new_fcb</span><span class="p">,</span><span class="n">new_content</span><span class="p">):</span>
+    <span class="n">self</span><span class="p">.</span><span class="nf">delete_file_content</span><span class="p">(</span><span class="n">old_start</span><span class="p">,</span><span class="n">old_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">give_space</span><span class="p">(</span><span class="n">new_fcb</span><span class="p">,</span><span class="n">new_content</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="checking-for-duplicate-filenames-in-the-same-directory">Checking for Duplicate Filenames in the Same Directory</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">check_same_name</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">p_node</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">p_node</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="c1"># Only check direct children of the given node (parent node)
+</span>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">p_node</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">child</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">child</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_type</span> <span class="o">==</span> <span class="n">file_type</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>  <span class="c1"># Found a direct child with the same name and type, return False
+</span>        <span class="k">return</span> <span class="bp">True</span>  <span class="c1"># No file with the same name and type found in the same directory, return True
+</span></code></pre></div></div>
+
+<h4 id="saving-file-content">Saving File Content</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">save_content</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">textEdit</span><span class="p">.</span><span class="nf">toPlainText</span><span class="p">()</span>
+        <span class="n">fcb</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="n">current_node</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">FCB</span><span class="p">.</span><span class="n">TXTFILE</span><span class="p">).</span><span class="n">fcb</span>
+        <span class="n">old_size</span> <span class="o">=</span> <span class="n">fcb</span><span class="p">.</span><span class="n">size</span>
+        <span class="n">new_size</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">"</span><span class="s">%Y-%m-%d %H:%M:%S</span><span class="sh">"</span><span class="p">)</span>
+
+        <span class="c1"># Update file size and modification time
+</span>        <span class="n">fcb</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">new_size</span>
+        <span class="n">fcb</span><span class="p">.</span><span class="n">last_modify</span> <span class="o">=</span> <span class="n">current_time</span>
+
+        <span class="c1"># Attempt to update the file content on the disk
+</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="nf">file_update</span><span class="p">(</span><span class="n">fcb</span><span class="p">.</span><span class="n">start</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">fcb</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+            <span class="n">QMessageBox</span><span class="p">.</span><span class="nf">critical</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="sh">'</span><span class="s">Error</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Failed to save file on disk.</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="p">.</span><span class="nf">information</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="sh">'</span><span class="s">Success</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">File saved successfully.</span><span class="sh">'</span><span class="p">)</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="nf">write_my_disk</span><span class="p">()</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="nf">write_bit_map</span><span class="p">()</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="nf">write_category</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="creating-directory-tree">Creating Directory Tree</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">create_tree</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="c1"># Clear existing items in the tree
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">tree</span><span class="p">.</span><span class="nf">clear</span><span class="p">()</span>
+
+        <span class="c1"># Define a recursive function to add items
+</span>        <span class="k">def</span> <span class="nf">add_items</span><span class="p">(</span><span class="n">parent_item</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+            <span class="c1"># Create a tree item for the current node
+</span>            <span class="n">item</span> <span class="o">=</span> <span class="nc">QTreeWidgetItem</span><span class="p">(</span><span class="n">parent_item</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span><span class="p">])</span>
+
+            <span class="c1"># Recursively add tree items for each child node
+</span>            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+                <span class="nf">add_items</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+
+        <span class="c1"># Check if root node exists
+</span>        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c1"># Create tree item corresponding to root node
+</span>            <span class="n">root_item</span> <span class="o">=</span> <span class="nc">QTreeWidgetItem</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">tree</span><span class="p">,</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span> <span class="o">+</span> <span class="sh">"</span><span class="s"> (Root)</span><span class="sh">"</span><span class="p">])</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">tree</span><span class="p">.</span><span class="nf">addTopLevelItem</span><span class="p">(</span><span class="n">root_item</span><span class="p">)</span>
+
+            <span class="c1"># Add tree items for each child of the root node
+</span>            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+                <span class="nf">add_items</span><span class="p">(</span><span class="n">root_item</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+
+            <span class="c1"># Expand root node to display all child nodes by default
+</span>            <span class="n">root_item</span><span class="p">.</span><span class="nf">setExpanded</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">No root node is defined in the category.</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="disk-file-read-and-write-operations">Disk File Read and Write Operations</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">read_my_disk</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getcwd</span><span class="p">(),</span> <span class="sh">"</span><span class="s">MyDiskInfo.txt</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="c1"># First read disk remaining capacity information
+</span>                <span class="n">remain_line</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="nf">readline</span><span class="p">().</span><span class="nf">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">remain_line</span><span class="p">.</span><span class="nf">startswith</span><span class="p">(</span><span class="sh">"</span><span class="s">Remaining Blocks:</span><span class="sh">"</span><span class="p">):</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">remain</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">remain_line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">strip</span><span class="p">())</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">block_num</span><span class="p">):</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="nf">readline</span><span class="p">()</span>
+                    <span class="c1">#if line == '\n':  # Check if it's a blank line with only newline character
+</span>                        <span class="c1">#continue
+</span>
+                    <span class="c1"># Decode the line, handling all types of newlines
+</span>                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">rstrip</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># Remove only the newline at the end
+</span>                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">|||</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="se">\r\n</span><span class="sh">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">|r|</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="se">\r</span><span class="sh">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">|n|</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+                    <span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span>
+
+    <span class="k">def</span> <span class="nf">write_my_disk</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getcwd</span><span class="p">(),</span> <span class="sh">"</span><span class="s">MyDiskInfo.txt</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+            <span class="c1"># Write disk remaining capacity
+</span>            <span class="n">writer</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Remaining Blocks: </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">remain</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">memory</span><span class="p">:</span>
+                <span class="c1"># Output original data about to be encoded
+</span>                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Original data:</span><span class="sh">"</span><span class="p">,</span> <span class="nf">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+                <span class="c1"># Encode the line, handling all types of newlines
+</span>                <span class="n">encoded_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="se">\r\n</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">|||</span><span class="sh">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="se">\r</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">|r|</span><span class="sh">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">|n|</span><span class="sh">"</span><span class="p">)</span>
+
+                <span class="c1"># Print encoded data to confirm correct conversion
+</span>                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Encoded data:</span><span class="sh">"</span><span class="p">,</span> <span class="nf">repr</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">))</span>
+
+                <span class="n">writer</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">encoded_data</span> <span class="o">+</span> <span class="sh">'</span><span class="se">\n</span><span class="sh">'</span><span class="p">)</span>  <span class="c1"># Write converted data plus line separator
+</span>
+</code></pre></div></div>
+
+<p>Special encoding is applied to special characters “\r\n”, “\r”, “\n”. During reading, <code class="language-plaintext highlighter-rouge">line = reader.readline()</code> is used to ensure reading the entire line including newline characters, then <code class="language-plaintext highlighter-rouge">line = line.rstrip("\n")</code> removes the trailing newline.</p>
+
+<h4 id="directory-file-read-and-write-operations">Directory File Read and Write Operations</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">read_category</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">CategoryInfo.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="nf">readlines</span><span class="p">()</span>
+            <span class="n">root_node</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">parent_stack</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">current_node_info</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="sh">"</span><span class="s">Node Start</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">current_node_info</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">elif</span> <span class="sh">"</span><span class="s">Node End</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">fcb</span> <span class="o">=</span> <span class="nc">FCB</span><span class="p">(</span><span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">File Name</span><span class="sh">'</span><span class="p">],</span>
+                              <span class="nf">int</span><span class="p">(</span><span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">File Type</span><span class="sh">'</span><span class="p">]),</span>
+                              <span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">Last Modified</span><span class="sh">'</span><span class="p">],</span>
+                              <span class="nf">int</span><span class="p">(</span><span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">File Size</span><span class="sh">'</span><span class="p">]),</span>
+                              <span class="nf">int</span><span class="p">(</span><span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">Start Position</span><span class="sh">'</span><span class="p">]))</span>
+                    <span class="n">new_node</span> <span class="o">=</span> <span class="n">Category</span><span class="p">.</span><span class="nc">Node</span><span class="p">(</span><span class="n">fcb</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">parent_stack</span><span class="p">:</span>
+                        <span class="n">parent_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nf">add_child</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">root_node</span> <span class="o">=</span> <span class="n">new_node</span>  <span class="c1"># Mark as root node
+</span>                    <span class="n">parent_stack</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>  <span class="c1"># Add current node to stack as parent for subsequent child nodes
+</span>                <span class="k">elif</span> <span class="sh">"</span><span class="s">Parent End</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="n">parent_stack</span><span class="p">:</span>
+                    <span class="n">parent_stack</span><span class="p">.</span><span class="nf">pop</span><span class="p">()</span>  <span class="c1"># When all child nodes of a node have been processed, remove that node from stack
+</span>                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">: </span><span class="sh">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">parts</span>
+                            <span class="n">current_node_info</span><span class="p">[</span><span class="n">key</span><span class="p">.</span><span class="nf">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="nf">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">root_node</span><span class="p">:</span>
+            <span class="n">default_fcb</span> <span class="o">=</span>  <span class="nc">FCB</span><span class="p">(</span><span class="sh">"</span><span class="s">root</span><span class="sh">"</span><span class="p">,</span> <span class="n">FCB</span><span class="p">.</span><span class="n">FOLDER</span><span class="p">,</span> <span class="sh">""</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">root_node</span> <span class="o">=</span> <span class="n">Category</span><span class="p">.</span><span class="nc">Node</span><span class="p">(</span><span class="n">default_fcb</span><span class="p">)</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root_node</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">root_node</span> <span class="o">=</span> <span class="n">root_node</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">current_node</span> <span class="o">=</span> <span class="n">root_node</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">file_form_init</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write_category</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">CategoryInfo.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">write_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent_name</span><span class="o">=</span><span class="sh">""</span><span class="p">):</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Node Start</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Parent Name: </span><span class="si">{</span><span class="n">parent_name</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">File Name: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">File Type: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_type</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Last Modified: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">last_modify</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">File Size: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">size</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Start Position: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">start</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Node End</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+                    <span class="nf">write_node</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Parent End</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># Mark end of parent node
+</span>
+            <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>
+                <span class="nf">write_node</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>The directory structure and file information are written to the directory file. If the directory structure is as follows:</p>
+
+<p><img src="/assets/images/filemanage/directory.png" alt="Directory Structure" class="mx-auto d-block" /></p>
+
+<p>Then the content of the directory file will be:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Node Start
+Parent Name: 
+File Name: root
+File Type: 1
+Last Modified: 2024-04-17 23:25:17
+File Size: 0
+Start Position: -1
+Node End
+Node Start
+Parent Name: root
+File Name: docs
+File Type: 1
+Last Modified: 2024-04-17 23:24:37
+File Size: 0
+Start Position: -1
+Node End
+Parent End
+Node Start
+Parent Name: root
+File Name: res
+File Type: 1
+Last Modified: 2024-04-17 23:25:04
+File Size: 0
+Start Position: -1
+Node End
+Node Start
+Parent Name: res
+File Name: test
+File Type: 1
+Last Modified: 2024-04-17 23:24:58
+File Size: 0
+Start Position: -1
+Node End
+Parent End
+Node Start
+Parent Name: res
+File Name: project
+File Type: 1
+Last Modified: 2024-04-17 23:25:04
+File Size: 0
+Start Position: -1
+Node End
+Parent End
+Parent End
+Node Start
+Parent Name: root
+File Name: yik
+File Type: 1
+Last Modified: 2024-04-17 23:25:17
+File Size: 0
+Start Position: -1
+Node End
+Node Start
+Parent Name: yik
+File Name: code
+File Type: 1
+Last Modified: 2024-04-17 23:25:17
+File Size: 0
+Start Position: -1
+Node End
+Parent End
+Parent End
+Parent End
+</code></pre></div></div>
+
+<p>To better illustrate the principle, the above file content with indentation added:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Node Start
+Parent Name: 
+File Name: root
+File Type: 1
+Last Modified: 2024-04-17 23:25:17
+File Size: 0
+Start Position: -1
+Node End
+
+    Node Start
+    Parent Name: root
+    File Name: docs
+    File Type: 1
+    Last Modified: 2024-04-17 23:24:37
+    File Size: 0
+    Start Position: -1
+    Node End
+    Parent End
+
+    Node Start
+    Parent Name: root
+    File Name: res
+    File Type: 1
+    Last Modified: 2024-04-17 23:25:04
+    File Size: 0
+    Start Position: -1
+    Node End
+
+        Node Start
+        Parent Name: res
+        File Name: test
+        File Type: 1
+        Last Modified: 2024-04-17 23:24:58
+        File Size: 0
+        Start Position: -1
+        Node End
+        Parent End
+
+        Node Start
+        Parent Name: res
+        File Name: project
+        File Type: 1
+        Last Modified: 2024-04-17 23:25:04
+        File Size: 0
+        Start Position: -1
+        Node End
+        Parent End
+    Parent End
+
+    Node Start
+    Parent Name: root
+    File Name: yik
+    File Type: 1
+    Last Modified: 2024-04-17 23:25:17
+    File Size: 0
+    Start Position: -1
+    Node End
+
+        Node Start
+        Parent Name: yik
+        File Name: code
+        File Type: 1
+        Last Modified: 2024-04-17 23:25:17
+        File Size: 0
+        Start Position: -1
+        Node End
+        Parent End
+    Parent End
+Parent End
+
+</code></pre></div></div>
+
+<p>The file exhibits the following characteristics:</p>
+
+<ul>
+  <li>Each node starts with a “Node Start” marker and ends with a “Node End” marker;</li>
+  <li>When all child nodes of a node have been listed, “Parent End” is output;</li>
+</ul>
+
+<p>These characteristics can also be obtained through the <code class="language-plaintext highlighter-rouge">write_category(self)</code> function;</p>
+
+<p>Next, the principle of the <code class="language-plaintext highlighter-rouge">read_category(self)</code> function is explained:</p>
+
+<ul>
+  <li>First, all data from the directory file is read;</li>
+  <li>Process the read data line by line:
+    <ul>
+      <li>If the line contains “Node Start”, clear current_node_info to prepare for reading new node data;</li>
+      <li>If it’s other node information, split the data to obtain key and value;</li>
+      <li>If the line contains “Node End”, it indicates all information for a node has been read. Create the node and add it as a child node to the current parent node (top element of stack). If the stack is empty at this point, this node is the root node. Finally, push this node onto the stack to serve as the parent for subsequent nodes;</li>
+      <li>If the line contains “Parent End”, it indicates all child nodes of the current parent have been processed, so pop the top element from the stack;</li>
+    </ul>
+  </li>
+  <li>If there is no root node information, create a default root node;</li>
+  <li>Set the root node of the directory;</li>
+</ul>]]></content><author><name>yik</name></author><category term="Algorithms" /><summary type="html"><![CDATA[File Management Simulation System Design Report]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/filemanage/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/filemanage/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">文件管理模拟 - TJU操作系统课设方案</title><link href="http://localhost:4000/FileManage/" rel="alternate" type="text/html" title="文件管理模拟 - TJU操作系统课设方案" /><published>2025-12-26T00:00:00+00:00</published><updated>2025-12-26T00:00:00+00:00</updated><id>http://localhost:4000/FileManage</id><content type="html" xml:base="http://localhost:4000/FileManage/"><![CDATA[<h2 id="文件管理模拟系统-设计方案报告">文件管理模拟系统 设计方案报告</h2>
+
+<h3 id="目录">目录</h3>
+
+<ul>
+  <li><a href="#文件管理模拟系统-设计方案报告">文件管理模拟系统 设计方案报告</a>
+    <ul>
+      <li><a href="#目录">目录</a></li>
+      <li><a href="#开发环境">开发环境</a></li>
+      <li><a href="#项目结构">项目结构</a></li>
+      <li><a href="#界面">界面</a></li>
+      <li><a href="#操作说明">操作说明</a></li>
+      <li><a href="#实现的功能">实现的功能</a></li>
+      <li><a href="#系统分析">系统分析</a>
+        <ul>
+          <li><a href="#实现的类">实现的类</a></li>
+          <li><a href="#显式链接法">显式链接法</a></li>
+          <li><a href="#位图fat表">位图、FAT表</a></li>
+        </ul>
+      </li>
+      <li><a href="#系统实现">系统实现</a>
+        <ul>
+          <li><a href="#为文件内容分配磁盘空间">为文件内容分配磁盘空间</a></li>
+          <li><a href="#获取文件内容">获取文件内容</a></li>
+          <li><a href="#删除文件内容">删除文件内容</a></li>
+          <li><a href="#更新文件内容">更新文件内容</a></li>
+          <li><a href="#检查同目录下是否有同名文件">检查同目录下是否有同名文件</a></li>
+          <li><a href="#保存文件内容">保存文件内容</a></li>
+          <li><a href="#创建目录树">创建目录树</a></li>
+          <li><a href="#磁盘文件的写入和读取">磁盘文件的写入和读取</a></li>
+          <li><a href="#目录文件的写入和读取">目录文件的写入和读取</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="开发环境">开发环境</h3>
+
+<ul>
+  <li>开发环境：Windows 11</li>
+  <li>开发软件：Pycharm</li>
+  <li>开发语言：Python 3.11</li>
+  <li>主要引用模块：
+    <ul>
+      <li>PyQt5</li>
+      <li>sys</li>
+      <li>os</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="项目结构">项目结构</h3>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FileManageSystem/
+    BitMapInfo.txt
+    Category.py
+    CategoryInfo.txt
+    FCB.py
+    main.py
+    MyDiskInfo.txt
+    project_structure.txt
+    VirtualDisk.py
+    运行时截图.png
+    docs/
+        文件管理模拟系统 设计方案报告.md
+    res/
+        cat.jpg
+        file.png
+        folder.jpg
+        icon.jpg
+</code></pre></div></div>
+
+<h3 id="界面">界面</h3>
+
+<p><img src="/assets/images/filemanage/interface.png" alt="运行时截图" class="mx-auto d-block" /></p>
+
+<h3 id="操作说明">操作说明</h3>
+
+<ul>
+  <li>点击右侧按钮可以新建文件，文件夹，格式化磁盘；</li>
+  <li>当用鼠标右键点击空白区域时，可以新建文件或文件夹；</li>
+  <li>当用鼠标右键点击文件或文件夹名称时，可以打开或者删除文件和文件夹；</li>
+  <li>点击文件或文件夹名可以打开文件编辑框或者打开文件夹；</li>
+  <li>当退出文件编辑框时可以选择是否保存修改；</li>
+  <li>界面右侧上方可以输入名称，选择类型，然后在当前目录下进行搜索；</li>
+  <li>可以按文件类型，文件名和修改日期对文件夹和文件进行排序。</li>
+</ul>
+
+<h3 id="实现的功能">实现的功能</h3>
+
+<ul>
+  <li>
+    <p>当前目录下文件和文件夹信息的显示；</p>
+  </li>
+  <li>文件和文件夹的创建与删除；</li>
+  <li>文件夹的打开，文件的编辑；</li>
+  <li>格式化磁盘；</li>
+  <li>文件和文件夹的搜索；</li>
+  <li>树状目录结构示意图；</li>
+  <li>按文件名，修改实现，文件类型排列文件和文件夹；</li>
+  <li>返回上级目录；</li>
+  <li>当前路径的显示。</li>
+</ul>
+
+<h3 id="系统分析">系统分析</h3>
+
+<h4 id="实现的类">实现的类</h4>
+
+<ul>
+  <li>
+    <p>FCB类：文件控制块，记录文件名称，文件类型，修改日期，文件大小，在磁盘中的起始存储位置；</p>
+  </li>
+  <li>
+    <p>Node类：存储子节点，记录父节点，映射为文件之间的关系；</p>
+  </li>
+  <li>
+    <p>Category类：存储整个文件系统的目录信息，其中的root记录了根节点，提供了一些方法：</p>
+
+    <ul>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">free_category(self, p_node)</code>：释放指定节点的目录；</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">search(self, p_node, file_name, file_type)</code>：在指定节点下搜索文件或文件夹；</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">search_in_current_directory(self, p_node, file_name, file_type)</code>：只在指定目录下搜索文件或文件夹；</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">create_file(self, parent_node, fcb)</code>：创建文件或文件夹；</p>
+      </li>
+      <li>
+        <p><code class="language-plaintext highlighter-rouge">check_same_name(self, p_node, name, file_type)</code>：判断在同一目录下是否存在同名文件或文件夹。</p>
+      </li>
+    </ul>
+  </li>
+  <li>VirtualDisk类：模拟对磁盘的操作，记录了磁盘大小，存储块大小，存储块数量，剩余存储块数量，内存和位图，提供了一些方法：
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">get_block_size(self, size)</code>：得到指定大小所要占用的存储块数量；</li>
+      <li><code class="language-plaintext highlighter-rouge">give_space(self, fcb, content)</code>：为特定fcb分配存储content的空间，将内容写入磁盘中，并对位图做出修改；</li>
+      <li><code class="language-plaintext highlighter-rouge">get_file_content(self,fcb)</code>：返回指定fcb在存储在磁盘中的内容；</li>
+      <li><code class="language-plaintext highlighter-rouge">delete_file_content(self, start, size)</code>：删除指定起始位置和大小存储在磁盘上的内容；</li>
+      <li><code class="language-plaintext highlighter-rouge">file_update(self,old_start,old_size,new_fcb,new_content)</code>：更新文件内容。</li>
+    </ul>
+  </li>
+  <li>MainWindow类：主窗口，维护了主要的程序逻辑；</li>
+  <li>HelpDialog类：操作帮助窗口，在初次打开文件管理系统时弹出，给用户提供操作帮助；</li>
+  <li>CreateDialog类：新建文件和文件夹窗口，在新建文件和文件夹时弹出；</li>
+  <li>NoteForm类：编辑文本文件的界面，在编辑文本文件时弹出；</li>
+</ul>
+
+<h4 id="显式链接法">显式链接法</h4>
+
+<ul>
+  <li>本文件系统中, 文件存储空间管理使用显示链接的方法，文件中的内容存放在磁盘不同的块中，每次创建文件时为文件分配数量合适的空闲块。每次写文件时按顺序将文件内容写在相应块中; 删除文件时将原先有内 容的位置置为空即可。</li>
+</ul>
+
+<h4 id="位图fat表">位图、FAT表</h4>
+
+<ul>
+  <li>磁盘空闲空间管理在位图的基础上进行改造，将存放磁盘上文件位置信息的FAT表与传统的位图进行结合， 磁盘空闲的位置使用EMPTY = -1标识，放有文件的盘块存放文件所在的下一个盘块的位置，文件存放结 束的盘块位置使用END = -2标识。</li>
+</ul>
+
+<h3 id="系统实现">系统实现</h3>
+
+<h4 id="为文件内容分配磁盘空间">为文件内容分配磁盘空间</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">give_space</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">fcb</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="n">index</span> <span class="o">&lt;</span> <span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+            <span class="c1"># 特别处理换行符，保证'\r\n'不被拆分
+</span>            <span class="k">if</span> <span class="n">content</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="sh">'</span><span class="se">\r\n</span><span class="sh">'</span> <span class="ow">and</span> <span class="n">self</span><span class="p">.</span><span class="n">block_size</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&lt;=</span> <span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+                <span class="n">blocks</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="mi">2</span>
+            <span class="k">elif</span> <span class="n">index</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">block_size</span> <span class="o">&lt;=</span> <span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">):</span>
+                <span class="n">blocks</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="n">self</span><span class="p">.</span><span class="n">block_size</span><span class="p">])</span>
+                <span class="n">index</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">block_size</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># 添加最后一个可能的小于block_size的块
+</span>                <span class="n">blocks</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="n">index</span><span class="p">:])</span>
+                <span class="k">break</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">blocks</span><span class="p">:</span>  <span class="c1"># 如果blocks为空（content为空或其他情况）
+</span>            <span class="k">return</span> <span class="bp">True</span>  
+
+        <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">remain</span><span class="p">:</span>
+            <span class="c1"># 找到文件开始存放的位置
+</span>            <span class="n">start</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">block_num</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span><span class="p">:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">remain</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">fcb</span><span class="p">.</span><span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="k">break</span>
+
+            <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>  <span class="c1"># 如果没有找到空间
+</span>                <span class="k">return</span> <span class="bp">False</span>
+
+            <span class="c1"># 从该位置往后开始存放内容
+</span>            <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="nf">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span> <span class="ow">and</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">block_num</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span><span class="p">:</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">remain</span> <span class="o">-=</span> <span class="mi">1</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span>  <span class="c1"># 以链接的方式存储每位数据
+</span>                    <span class="n">start</span> <span class="o">=</span> <span class="n">i</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">blocks</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+                    <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>  <span class="c1"># 处理下一个块
+</span>                <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="k">if</span> <span class="n">j</span> <span class="o">==</span> <span class="nf">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">):</span>
+                <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">start</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">END</span>  <span class="c1"># 标记文件尾
+</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<p>首先将content进行分割，确保文本按照给定的块大小被分割，同时不会将 <code class="language-plaintext highlighter-rouge">\r\n</code> 换行符拆分到不同的块中。然后遍历磁盘，找到第一个空闲的存储块，将它的位置记录到fcb.start中，并往里面写入内容，同时将剩余的存储块数量减一。接着从该位置往后开始存放内容，在位图中以链接的方式存储块之间的联系，位图中的每一位存储下一个块的位置，文件尾用self.END表示。</p>
+
+<h4 id="获取文件内容">获取文件内容</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">get_file_content</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">fcb</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">fcb</span><span class="p">.</span><span class="n">start</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sh">""</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">content</span> <span class="o">=</span> <span class="sh">""</span>
+            <span class="n">start</span> <span class="o">=</span> <span class="n">fcb</span><span class="p">.</span><span class="n">start</span>
+            <span class="n">blocks</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_block_size</span><span class="p">(</span><span class="n">fcb</span><span class="p">.</span><span class="n">size</span><span class="p">)</span>
+
+            <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">i</span><span class="o">=</span><span class="n">start</span>
+            <span class="k">while</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">self</span><span class="p">.</span><span class="n">block_num</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">blocks</span><span class="p">:</span>
+                <span class="n">content</span> <span class="o">+=</span> <span class="n">self</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">i</span><span class="o">=</span><span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                <span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">content</span>
+</code></pre></div></div>
+
+<p>根据位图中存储的信息将不同存储块里的内容拼接在一起。</p>
+
+<h4 id="删除文件内容">删除文件内容</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">delete_file_content</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+       <span class="k">if</span> <span class="n">start</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span> <span class="ow">or</span> <span class="n">start</span> <span class="o">&gt;=</span> <span class="n">self</span><span class="p">.</span><span class="n">block_num</span><span class="p">:</span>
+           <span class="k">return</span>  <span class="c1"># If start position is invalid or file is empty, return immediately
+</span>
+       <span class="n">blocks</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="nf">get_block_size</span><span class="p">(</span><span class="n">size</span><span class="p">)</span>
+
+       <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+       <span class="n">i</span> <span class="o">=</span> <span class="n">start</span>
+       <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">self</span><span class="p">.</span><span class="n">block_num</span> <span class="ow">and</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">blocks</span><span class="p">:</span>
+           <span class="n">next_index</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># Get next index before clearing
+</span>           <span class="n">self</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sh">""</span>
+           <span class="n">self</span><span class="p">.</span><span class="n">bit_map</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">EMPTY</span>
+           <span class="n">self</span><span class="p">.</span><span class="n">remain</span> <span class="o">+=</span> <span class="mi">1</span>
+
+           <span class="k">if</span> <span class="n">next_index</span> <span class="o">==</span> <span class="n">self</span><span class="p">.</span><span class="n">END</span><span class="p">:</span>
+               <span class="k">break</span>  <span class="c1"># If this was the last block, exit the loop
+</span>
+           <span class="n">i</span> <span class="o">=</span> <span class="n">next_index</span>
+           <span class="n">count</span> <span class="o">+=</span> <span class="mi">1</span>
+</code></pre></div></div>
+
+<h4 id="更新文件内容">更新文件内容</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">file_update</span><span class="p">(</span><span class="n">self</span><span class="p">,</span><span class="n">old_start</span><span class="p">,</span><span class="n">old_size</span><span class="p">,</span><span class="n">new_fcb</span><span class="p">,</span><span class="n">new_content</span><span class="p">):</span>
+    <span class="n">self</span><span class="p">.</span><span class="nf">delete_file_content</span><span class="p">(</span><span class="n">old_start</span><span class="p">,</span><span class="n">old_size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">self</span><span class="p">.</span><span class="nf">give_space</span><span class="p">(</span><span class="n">new_fcb</span><span class="p">,</span><span class="n">new_content</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="检查同目录下是否有同名文件">检查同目录下是否有同名文件</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">def</span> <span class="nf">check_same_name</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="n">p_node</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">file_type</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">p_node</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="c1"># 只检查给定节点（即父节点）的直接子节点
+</span>        <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">p_node</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">child</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">child</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_type</span> <span class="o">==</span> <span class="n">file_type</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">False</span>  <span class="c1"># 找到一个同名同类型的直接子节点，返回 False
+</span>        <span class="k">return</span> <span class="bp">True</span>  <span class="c1"># 在同级目录中没有找到同名同类型的文件，返回 True
+</span></code></pre></div></div>
+
+<h4 id="保存文件内容">保存文件内容</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">save_content</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">textEdit</span><span class="p">.</span><span class="nf">toPlainText</span><span class="p">()</span>
+        <span class="n">fcb</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="n">current_node</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">FCB</span><span class="p">.</span><span class="n">TXTFILE</span><span class="p">).</span><span class="n">fcb</span>
+        <span class="n">old_size</span> <span class="o">=</span> <span class="n">fcb</span><span class="p">.</span><span class="n">size</span>
+        <span class="n">new_size</span> <span class="o">=</span> <span class="nf">len</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+        <span class="n">current_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="p">.</span><span class="nf">now</span><span class="p">().</span><span class="nf">strftime</span><span class="p">(</span><span class="sh">"</span><span class="s">%Y-%m-%d %H:%M:%S</span><span class="sh">"</span><span class="p">)</span>
+
+        <span class="c1"># Update file size and modification time
+</span>        <span class="n">fcb</span><span class="p">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">new_size</span>
+        <span class="n">fcb</span><span class="p">.</span><span class="n">last_modify</span> <span class="o">=</span> <span class="n">current_time</span>
+
+        <span class="c1"># Attempt to update the file content on the disk
+</span>        <span class="k">if</span> <span class="ow">not</span> <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="nf">file_update</span><span class="p">(</span><span class="n">fcb</span><span class="p">.</span><span class="n">start</span><span class="p">,</span> <span class="n">old_size</span><span class="p">,</span> <span class="n">fcb</span><span class="p">,</span> <span class="n">content</span><span class="p">):</span>
+            <span class="n">QMessageBox</span><span class="p">.</span><span class="nf">critical</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="sh">'</span><span class="s">Error</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">Failed to save file on disk.</span><span class="sh">'</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">QMessageBox</span><span class="p">.</span><span class="nf">information</span><span class="p">(</span><span class="n">self</span><span class="p">,</span> <span class="sh">'</span><span class="s">Success</span><span class="sh">'</span><span class="p">,</span> <span class="sh">'</span><span class="s">File saved successfully.</span><span class="sh">'</span><span class="p">)</span>
+
+        <span class="c1"># Update the modification time for all parent nodes
+</span>        <span class="n">node</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="nf">search</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="n">current_node</span><span class="p">,</span> <span class="n">self</span><span class="p">.</span><span class="n">filename</span><span class="p">,</span> <span class="n">FCB</span><span class="p">.</span><span class="n">TXTFILE</span><span class="p">)</span>
+        <span class="k">while</span> <span class="n">node</span><span class="p">.</span><span class="n">parent</span><span class="p">:</span>
+            <span class="n">node</span><span class="p">.</span><span class="n">parent</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">last_modify</span> <span class="o">=</span> <span class="n">current_time</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">.</span><span class="n">parent</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="nf">update_disk_info</span><span class="p">()</span>
+        <span class="c1"># Assume a method to update the UI to reflect changes
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">main_form</span><span class="p">.</span><span class="nf">display_file_folder_info</span><span class="p">(</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span><span class="p">,</span> <span class="n">fcb</span><span class="p">.</span><span class="n">last_modify</span><span class="p">,</span> <span class="n">fcb</span><span class="p">.</span><span class="n">file_type</span><span class="p">,</span> <span class="n">fcb</span><span class="p">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="c1">#self.main_form.file_form_init(self.main_form.current_node)  # Refresh the view to show updated times
+</span>
+</code></pre></div></div>
+
+<h4 id="创建目录树">创建目录树</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">setup_tree</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="c1"># 清除现有的树结构
+</span>        <span class="n">self</span><span class="p">.</span><span class="n">tree</span><span class="p">.</span><span class="nf">clear</span><span class="p">()</span>
+        <span class="c1"># 创建一个递归函数来填充树视图
+</span>        <span class="k">def</span> <span class="nf">add_items</span><span class="p">(</span><span class="n">parent_item</span><span class="p">,</span> <span class="n">node</span><span class="p">):</span>
+            <span class="c1"># 根据当前节点的信息创建一个新的树项目
+</span>            <span class="k">if</span> <span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_type</span> <span class="o">==</span> <span class="n">FCB</span><span class="p">.</span><span class="n">FOLDER</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="nc">QTreeWidgetItem</span><span class="p">(</span><span class="n">parent_item</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span> <span class="o">+</span> <span class="sh">"</span><span class="s"> (Folder)</span><span class="sh">"</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="nc">QTreeWidgetItem</span><span class="p">(</span><span class="n">parent_item</span><span class="p">,</span> <span class="p">[</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span> <span class="o">+</span> <span class="sh">"</span><span class="s"> (File)</span><span class="sh">"</span><span class="p">])</span>
+
+            <span class="c1"># 递归地为每个子节点添加树项目
+</span>            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+                <span class="nf">add_items</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+
+        <span class="c1"># 检查根节点是否存在
+</span>        <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="c1"># 创建根节点对应的树项目
+</span>            <span class="n">root_item</span> <span class="o">=</span> <span class="nc">QTreeWidgetItem</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">tree</span><span class="p">,</span> <span class="p">[</span><span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span> <span class="o">+</span> <span class="sh">"</span><span class="s"> (Root)</span><span class="sh">"</span><span class="p">])</span>
+            <span class="n">self</span><span class="p">.</span><span class="n">tree</span><span class="p">.</span><span class="nf">addTopLevelItem</span><span class="p">(</span><span class="n">root_item</span><span class="p">)</span>
+
+            <span class="c1"># 为根节点的每个子节点添加树项目
+</span>            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+                <span class="nf">add_items</span><span class="p">(</span><span class="n">root_item</span><span class="p">,</span> <span class="n">child</span><span class="p">)</span>
+
+            <span class="c1"># 展开根节点，以便默认显示所有子节点
+</span>            <span class="n">root_item</span><span class="p">.</span><span class="nf">setExpanded</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">No root node is defined in the category.</span><span class="sh">"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="磁盘文件的写入和读取">磁盘文件的写入和读取</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">read_my_disk</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getcwd</span><span class="p">(),</span> <span class="sh">"</span><span class="s">MyDiskInfo.txt</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">reader</span><span class="p">:</span>
+                <span class="c1"># 首先读取磁盘的剩余容量信息
+</span>                <span class="n">remain_line</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="nf">readline</span><span class="p">().</span><span class="nf">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">remain_line</span><span class="p">.</span><span class="nf">startswith</span><span class="p">(</span><span class="sh">"</span><span class="s">Remaining Blocks:</span><span class="sh">"</span><span class="p">):</span>
+                    <span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">remain</span> <span class="o">=</span> <span class="nf">int</span><span class="p">(</span><span class="n">remain_line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">:</span><span class="sh">"</span><span class="p">)[</span><span class="mi">1</span><span class="p">].</span><span class="nf">strip</span><span class="p">())</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nf">range</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">block_num</span><span class="p">):</span>
+                    <span class="n">line</span> <span class="o">=</span> <span class="n">reader</span><span class="p">.</span><span class="nf">readline</span><span class="p">()</span>
+                    <span class="c1">#if line == '\n':  # 检查是否是空行，只有换行符的行
+</span>                        <span class="c1">#continue
+</span>
+                    <span class="c1"># Decode the line, handling all types of newlines
+</span>                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">rstrip</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># Remove only the newline at the end
+</span>                    <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">|||</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="se">\r\n</span><span class="sh">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">|r|</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="se">\r</span><span class="sh">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="s">|n|</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+                    <span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">memory</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">line</span>
+
+    <span class="k">def</span> <span class="nf">write_my_disk</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="nf">getcwd</span><span class="p">(),</span> <span class="sh">"</span><span class="s">MyDiskInfo.txt</span><span class="sh">"</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">exists</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+            <span class="n">os</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="sh">'</span><span class="s">utf-8</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="n">writer</span><span class="p">:</span>
+            <span class="c1"># 写入磁盘的剩余容量
+</span>            <span class="n">writer</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Remaining Blocks: </span><span class="si">{</span><span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">remain</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">self</span><span class="p">.</span><span class="n">disk</span><span class="p">.</span><span class="n">memory</span><span class="p">:</span>
+                <span class="c1"># 输出即将被编码的原始数据
+</span>                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Original data:</span><span class="sh">"</span><span class="p">,</span> <span class="nf">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+
+                <span class="c1"># Encode the line, handling all types of newlines
+</span>                <span class="n">encoded_data</span> <span class="o">=</span> <span class="n">data</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="se">\r\n</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">|||</span><span class="sh">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="se">\r</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">|r|</span><span class="sh">"</span><span class="p">).</span><span class="nf">replace</span><span class="p">(</span><span class="sh">"</span><span class="se">\n</span><span class="sh">"</span><span class="p">,</span> <span class="sh">"</span><span class="s">|n|</span><span class="sh">"</span><span class="p">)</span>
+
+                <span class="c1"># 打印编码后的数据以确认转换正确
+</span>                <span class="nf">print</span><span class="p">(</span><span class="sh">"</span><span class="s">Encoded data:</span><span class="sh">"</span><span class="p">,</span> <span class="nf">repr</span><span class="p">(</span><span class="n">encoded_data</span><span class="p">))</span>
+
+                <span class="n">writer</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="n">encoded_data</span> <span class="o">+</span> <span class="sh">'</span><span class="se">\n</span><span class="sh">'</span><span class="p">)</span>  <span class="c1"># 写入转换后的数据加上行分隔符
+</span>
+</code></pre></div></div>
+
+<p>对特殊字符,”\r\n”，”\r”，”\n”进行特殊编码处理，在读入时使用line = reader.readline()保证读取整行数据，包括换行符，再用line = line.rstrip(“\n”) 移除行末换行符。</p>
+
+<h4 id="目录文件的写入和读取">目录文件的写入和读取</h4>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">def</span> <span class="nf">read_category</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">CategoryInfo.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">'</span><span class="s">r</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="nb">file</span><span class="p">.</span><span class="nf">readlines</span><span class="p">()</span>
+            <span class="n">root_node</span> <span class="o">=</span> <span class="bp">None</span>
+            <span class="n">parent_stack</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="n">current_node_info</span> <span class="o">=</span> <span class="p">{}</span>
+
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="n">line</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">strip</span><span class="p">()</span>
+                <span class="k">if</span> <span class="sh">"</span><span class="s">Node Start</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">current_node_info</span> <span class="o">=</span> <span class="p">{}</span>
+                <span class="k">elif</span> <span class="sh">"</span><span class="s">Node End</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">fcb</span> <span class="o">=</span> <span class="nc">FCB</span><span class="p">(</span><span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">File Name</span><span class="sh">'</span><span class="p">],</span>
+                              <span class="nf">int</span><span class="p">(</span><span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">File Type</span><span class="sh">'</span><span class="p">]),</span>
+                              <span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">Last Modified</span><span class="sh">'</span><span class="p">],</span>
+                              <span class="nf">int</span><span class="p">(</span><span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">File Size</span><span class="sh">'</span><span class="p">]),</span>
+                              <span class="nf">int</span><span class="p">(</span><span class="n">current_node_info</span><span class="p">[</span><span class="sh">'</span><span class="s">Start Position</span><span class="sh">'</span><span class="p">]))</span>
+                    <span class="n">new_node</span> <span class="o">=</span> <span class="n">Category</span><span class="p">.</span><span class="nc">Node</span><span class="p">(</span><span class="n">fcb</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">parent_stack</span><span class="p">:</span>
+                        <span class="n">parent_stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">].</span><span class="nf">add_child</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">root_node</span> <span class="o">=</span> <span class="n">new_node</span>  <span class="c1"># 标记根节点
+</span>                    <span class="n">parent_stack</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="n">new_node</span><span class="p">)</span>  <span class="c1"># 添加当前节点到栈，用作后续子节点的父节点
+</span>                <span class="k">elif</span> <span class="sh">"</span><span class="s">Parent End</span><span class="sh">"</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="n">parent_stack</span><span class="p">:</span>
+                    <span class="n">parent_stack</span><span class="p">.</span><span class="nf">pop</span><span class="p">()</span>  <span class="c1"># 当一个节点的所有子节点都被处理完毕，从栈中移除该节点
+</span>                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">line</span><span class="p">:</span>
+                        <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="p">.</span><span class="nf">split</span><span class="p">(</span><span class="sh">"</span><span class="s">: </span><span class="sh">"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="nf">len</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                            <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">parts</span>
+                            <span class="n">current_node_info</span><span class="p">[</span><span class="n">key</span><span class="p">.</span><span class="nf">strip</span><span class="p">()]</span> <span class="o">=</span> <span class="n">value</span><span class="p">.</span><span class="nf">strip</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">root_node</span><span class="p">:</span>
+            <span class="n">default_fcb</span> <span class="o">=</span>  <span class="nc">FCB</span><span class="p">(</span><span class="sh">"</span><span class="s">root</span><span class="sh">"</span><span class="p">,</span> <span class="n">FCB</span><span class="p">.</span><span class="n">FOLDER</span><span class="p">,</span> <span class="sh">""</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">root_node</span> <span class="o">=</span> <span class="n">Category</span><span class="p">.</span><span class="nc">Node</span><span class="p">(</span><span class="n">default_fcb</span><span class="p">)</span>
+
+        <span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span> <span class="o">=</span> <span class="n">root_node</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">root_node</span> <span class="o">=</span> <span class="n">root_node</span>
+        <span class="n">self</span><span class="p">.</span><span class="n">current_node</span> <span class="o">=</span> <span class="n">root_node</span>
+        <span class="n">self</span><span class="p">.</span><span class="nf">file_form_init</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write_category</span><span class="p">(</span><span class="n">self</span><span class="p">):</span>
+        <span class="k">with</span> <span class="nf">open</span><span class="p">(</span><span class="sh">"</span><span class="s">CategoryInfo.txt</span><span class="sh">"</span><span class="p">,</span> <span class="sh">'</span><span class="s">w</span><span class="sh">'</span><span class="p">)</span> <span class="k">as</span> <span class="nb">file</span><span class="p">:</span>
+            <span class="k">def</span> <span class="nf">write_node</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">parent_name</span><span class="o">=</span><span class="sh">""</span><span class="p">):</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Node Start</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Parent Name: </span><span class="si">{</span><span class="n">parent_name</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">File Name: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">File Type: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_type</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Last Modified: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">last_modify</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">File Size: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">size</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sa">f</span><span class="sh">"</span><span class="s">Start Position: </span><span class="si">{</span><span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">start</span><span class="si">}</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Node End</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">node</span><span class="p">.</span><span class="n">children</span><span class="p">:</span>
+                    <span class="nf">write_node</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">node</span><span class="p">.</span><span class="n">fcb</span><span class="p">.</span><span class="n">file_name</span><span class="p">)</span>
+                <span class="nb">file</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span><span class="sh">"</span><span class="s">Parent End</span><span class="se">\n</span><span class="sh">"</span><span class="p">)</span>  <span class="c1"># 标记父节点的结束
+</span>
+            <span class="k">if</span> <span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">:</span>
+                <span class="nf">write_node</span><span class="p">(</span><span class="n">self</span><span class="p">.</span><span class="n">category</span><span class="p">.</span><span class="n">root</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p>将目录结构和文件信息写入目录文件中，如果目录结构如下：</p>
+
+<p><img src="/assets/images/filemanage/directory.png" alt="目录结构" class="mx-auto d-block" /></p>
+
+<p>那么目录文件的内容为：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Node Start
+Parent Name: 
+File Name: root
+File Type: 1
+Last Modified: 2024-04-17 23:25:17
+File Size: 0
+Start Position: -1
+Node End
+Node Start
+Parent Name: root
+File Name: docs
+File Type: 1
+Last Modified: 2024-04-17 23:24:37
+File Size: 0
+Start Position: -1
+Node End
+Parent End
+Node Start
+Parent Name: root
+File Name: res
+File Type: 1
+Last Modified: 2024-04-17 23:25:04
+File Size: 0
+Start Position: -1
+Node End
+Node Start
+Parent Name: res
+File Name: test
+File Type: 1
+Last Modified: 2024-04-17 23:24:58
+File Size: 0
+Start Position: -1
+Node End
+Parent End
+Node Start
+Parent Name: res
+File Name: project
+File Type: 1
+Last Modified: 2024-04-17 23:25:04
+File Size: 0
+Start Position: -1
+Node End
+Parent End
+Parent End
+Node Start
+Parent Name: root
+File Name: yik
+File Type: 1
+Last Modified: 2024-04-17 23:25:17
+File Size: 0
+Start Position: -1
+Node End
+Node Start
+Parent Name: yik
+File Name: code
+File Type: 1
+Last Modified: 2024-04-17 23:25:17
+File Size: 0
+Start Position: -1
+Node End
+Parent End
+Parent End
+Parent End
+</code></pre></div></div>
+
+<p>为了方便说明原理，对上面文件内容添加缩进：</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Node Start
+Parent Name: 
+File Name: root
+File Type: 1
+Last Modified: 2024-04-17 23:25:17
+File Size: 0
+Start Position: -1
+Node End
+
+    Node Start
+    Parent Name: root
+    File Name: docs
+    File Type: 1
+    Last Modified: 2024-04-17 23:24:37
+    File Size: 0
+    Start Position: -1
+    Node End
+    Parent End
+
+    Node Start
+    Parent Name: root
+    File Name: res
+    File Type: 1
+    Last Modified: 2024-04-17 23:25:04
+    File Size: 0
+    Start Position: -1
+    Node End
+
+        Node Start
+        Parent Name: res
+        File Name: test
+        File Type: 1
+        Last Modified: 2024-04-17 23:24:58
+        File Size: 0
+        Start Position: -1
+        Node End
+        Parent End
+
+        Node Start
+        Parent Name: res
+        File Name: project
+        File Type: 1
+        Last Modified: 2024-04-17 23:25:04
+        File Size: 0
+        Start Position: -1
+        Node End
+        Parent End
+    Parent End
+
+    Node Start
+    Parent Name: root
+    File Name: yik
+    File Type: 1
+    Last Modified: 2024-04-17 23:25:17
+    File Size: 0
+    Start Position: -1
+    Node End
+
+        Node Start
+        Parent Name: yik
+        File Name: code
+        File Type: 1
+        Last Modified: 2024-04-17 23:25:17
+        File Size: 0
+        Start Position: -1
+        Node End
+        Parent End
+    Parent End
+Parent End
+
+</code></pre></div></div>
+
+<p>可以看出，该文件具有以下特点：</p>
+
+<ul>
+  <li>每个节点以Node Start标记开始，以Node End标记结束；</li>
+  <li>当一个节点的子节点全部被列出时，输出Parent End；</li>
+</ul>
+
+<p>这些特点也可以通过<code class="language-plaintext highlighter-rouge">write_category(self)</code>函数获得；</p>
+
+<p>接下来说明函数<code class="language-plaintext highlighter-rouge">read_category(self)</code>的原理：</p>
+
+<ul>
+  <li>首先读入目录文件中的所有数据；</li>
+  <li>逐行处理读入的数据：
+    <ul>
+      <li>如果该行包括”Node Start”，将current_node_info清空，准备读入新节点的数据；</li>
+      <li>如果是节点的其它信息，则对数据进行分割，获得key和value；</li>
+      <li>如果该行包括”Node End”，说明一个节点的信息已经全部读入，创建该节点，并把它作为子节点添加到当前的父节点（栈顶元素）下，如果此时栈为空，说明该节点就是根节点。最后，把该节点入栈，作为后续节点的根节点；</li>
+      <li>如果该行包括”Parent End”，说明当前父节点的所有子节点都已经处理完，弹出栈顶元素；</li>
+    </ul>
+  </li>
+  <li>如果没有根节点信息，创建一个默认的根节点；</li>
+  <li>设置目录的根节点；</li>
+</ul>]]></content><author><name>yik</name></author><category term="算法" /><summary type="html"><![CDATA[文件管理模拟系统 设计方案报告]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/filemanage/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/filemanage/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">Optimization Schemes for Cache Directory Coherence Protocols in Multi-Core Architectures</title><link href="http://localhost:4000/Cache-en/" rel="alternate" type="text/html" title="Optimization Schemes for Cache Directory Coherence Protocols in Multi-Core Architectures" /><published>2025-12-17T00:00:00+00:00</published><updated>2025-12-17T00:00:00+00:00</updated><id>http://localhost:4000/Cache-en</id><content type="html" xml:base="http://localhost:4000/Cache-en/"><![CDATA[<p>In multi-core system architectures, cache coherence protocols are primarily classified into snooping protocols and directory protocols, with the latter generally being considered superior. In classic directory schemes, every data block has a corresponding directory entry, which results in significant storage overhead. Consequently, sparse directories can be employed to reduce costs by maintaining information only for data currently cached. The Cuckoo directory, which improves upon the sparse directory using hash tables, represents a robust solution. A potentially superior alternative is the Stash directory, which incorporates a flag bit in the directory to distinguish cache states, further minimizing performance loss. Both sparse directory schemes offer significant improvements over traditional directories. Based on theoretical analysis, their practical feasibility can be further verified through simulation.</p>
 
 <h2 id="1-introduction">1. Introduction</h2>
 
@@ -371,7 +1620,7 @@
 
 <p>In summary, the worst-case time complexity does not exceed \(O(2^k)\).</p>
 
-<p><em>I encountered this problem during an algorithm course assignment. I felt the online time complexity analysis differed from my practical experience, so I made some improvements here.</em></p>]]></content><author><name>sam</name></author><category term="Algorithm" /><summary type="html"><![CDATA[Algorithm Approach]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/leetcode1219/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/leetcode1219/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">电梯调度 - 同济大学操作系统课设</title><link href="http://localhost:4000/Elevator/" rel="alternate" type="text/html" title="电梯调度 - 同济大学操作系统课设" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/Elevator</id><content type="html" xml:base="http://localhost:4000/Elevator/"><![CDATA[<h2 id="开发环境">开发环境</h2>
+<p><em>I encountered this problem during an algorithm course assignment. I felt the online time complexity analysis differed from my practical experience, so I made some improvements here.</em></p>]]></content><author><name>sam</name></author><category term="Algorithm" /><category term="featured" /><summary type="html"><![CDATA[Algorithm Approach]]></summary><media:thumbnail xmlns:media="http://search.yahoo.com/mrss/" url="http://localhost:4000/assets/images/leetcode1219/cover.jpg" /><media:content medium="image" url="http://localhost:4000/assets/images/leetcode1219/cover.jpg" xmlns:media="http://search.yahoo.com/mrss/" /></entry><entry><title type="html">电梯调度 - TJU操作系统课设方案</title><link href="http://localhost:4000/Elevator/" rel="alternate" type="text/html" title="电梯调度 - TJU操作系统课设方案" /><published>2025-12-15T00:00:00+00:00</published><updated>2025-12-15T00:00:00+00:00</updated><id>http://localhost:4000/Elevator</id><content type="html" xml:base="http://localhost:4000/Elevator/"><![CDATA[<h2 id="开发环境">开发环境</h2>
 
 <ul>
   <li><strong>开发环境</strong>：Windows 11</li>
